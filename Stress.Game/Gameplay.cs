@@ -51,11 +51,11 @@ namespace Stress.Game
         }
 
         /// <summary>
-        /// Happens when no player can act and the game is not yet over.
+        /// An attempt to jump start the game when no player can act and the game is not yet over.
+        /// Plays one card each from their closed stacks on hand to respective open stack.
         /// </summary>
         public void Draw()
         {
-
             // Stale mate, players pick up the respective stack. Two cards are needed to do a draw.
             if ((PlayerOne.Hand.Cards.Count + PlayerTwo.Hand.Cards.Count) < 2)
             {
