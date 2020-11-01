@@ -42,12 +42,13 @@
             </ItemsControl>
         </StackPanel>
         <StackPanel Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <RadioButton GroupName="PlayerOnePile" Content="Play left pile" IsChecked="{Binding Path=PlayerOne.PlayLeftPile}" />
-            <RadioButton GroupName="PlayerOnePile" Content="Play right pile" />
+            <RadioButton GroupName="PlayerOneStack" Content="Play left stack" IsChecked="{Binding Path=PlayerOne.PlayLeftStack}" />
+            <RadioButton GroupName="PlayerOneStack" Content="Play right stack" />
+            <Button Content="Call stress!" Margin="0,10,0,0" Command="{Binding Path=PlayerOne.CallStress}" />
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
-            <Button x:Name="LeftPile" Content="{Binding Path=LeftPileTopCard}" Margin="5" />
-            <Button x:Name="RightPile" Content="{Binding Path=RightPileTopCard}" Margin="5" />
+            <Button Content="{Binding Path=LeftStackTopCard}" Margin="5" />
+            <Button Content="{Binding Path=RightStackTopCard}" Margin="5" />
         </StackPanel>
         <StackPanel Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Label  Content="{Binding Path=PlayerTwo.NickName}" />
@@ -71,8 +72,9 @@
             </ItemsControl>
         </StackPanel>
         <StackPanel Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <RadioButton GroupName="PlayerTwoPile" Content="Play left pile" IsChecked="{Binding Path=PlayerTwo.PlayLeftPile}" />
-            <RadioButton GroupName="PlayerTwoPile" Content="Play right pile" />
+            <RadioButton GroupName="PlayerTwoStack" Content="Play left stack" IsChecked="{Binding Path=PlayerTwo.PlayLeftStack}" />
+            <RadioButton GroupName="PlayerTwoStack" Content="Play right stack" />
+            <Button Content="Call stress!" Margin="0,10,0,0" Command="{Binding Path=PlayerTwo.CallStress}" />            
         </StackPanel>
         <StackPanel Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
             <Button Content="Draw" Margin="5" Command="{Binding Path=DrawCommand}" />

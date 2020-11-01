@@ -18,8 +18,8 @@ namespace Stress.Clients.Desktop.ViewModels
 
         public PlayerViewModel PlayerOne { get; set; }
         public PlayerViewModel PlayerTwo { get; set; }
-        public Card LeftPileTopCard { get => _stressGameplay?.LeftPile?.TopCard; }
-        public Card RightPileTopCard { get => _stressGameplay?.RightPile?.TopCard; }
+        public Card LeftStackTopCard { get => _stressGameplay?.LeftStack?.TopCard; }
+        public Card RightStackTopCard { get => _stressGameplay?.RightStack?.TopCard; }
 
         public RelayCommand ResetCommand { get; set; }
         public RelayCommand DrawCommand { get; set; }
@@ -46,23 +46,33 @@ namespace Stress.Clients.Desktop.ViewModels
             PlayerTwo = new PlayerViewModel(_stressGameplay.PlayerTwo);
             RaisePropertyChanged(nameof(PlayerTwo));
 
-            RaisePropertyChanged(nameof(LeftPileTopCard));
-            RaisePropertyChanged(nameof(RightPileTopCard));
+            RaisePropertyChanged(nameof(LeftStackTopCard));
+            RaisePropertyChanged(nameof(RightStackTopCard));
 
             MessengerInstance.Register<PlayCardMessage>(this, OnPlayCardReceived);
+            MessengerInstance.Register<StressEventCalledMessage>(this, OnStressEventCalledReceived);
+        }
+
+        private void OnStressEventCalledReceived(StressEventCalledMessage message)
+        {
+            _stressGameplay.PlayerCallsStressEvent(message.CallingPlayer);
+            RaisePropertyChanged(nameof(PlayerOne));
+            RaisePropertyChanged(nameof(PlayerTwo));
+            RaisePropertyChanged(nameof(LeftStackTopCard));
+            RaisePropertyChanged(nameof(RightStackTopCard));
         }
 
         private void OnPlayCardReceived(PlayCardMessage message)
         {
-            OpenPileOfCards currentPile = _stressGameplay.LeftPile;
-            if (!message.OnLeftPile)
-                currentPile = _stressGameplay.RightPile;
+            OpenStackOfCards currentStack = _stressGameplay.LeftStack;
+            if (!message.PlayOnLeftStack)
+                currentStack = _stressGameplay.RightStack;
 
-            _stressGameplay.PlayCardOnPile(message.Player, message.Card, currentPile);
+            _stressGameplay.PlayCardOnStack(message.Player, message.Card, currentStack);
             RaisePropertyChanged(nameof(PlayerOne));
             RaisePropertyChanged(nameof(PlayerTwo));
-            RaisePropertyChanged(nameof(LeftPileTopCard));
-            RaisePropertyChanged(nameof(RightPileTopCard));
+            RaisePropertyChanged(nameof(LeftStackTopCard));
+            RaisePropertyChanged(nameof(RightStackTopCard));
         }
 
         private void ExecuteResetCommand()
@@ -79,8 +89,8 @@ namespace Stress.Clients.Desktop.ViewModels
         {
             _stressGameplay.Draw();
 
-            RaisePropertyChanged(nameof(LeftPileTopCard));
-            RaisePropertyChanged(nameof(RightPileTopCard));
+            RaisePropertyChanged(nameof(LeftStackTopCard));
+            RaisePropertyChanged(nameof(RightStackTopCard));
 
             MessengerInstance.Send(new DrawMessage());
         }

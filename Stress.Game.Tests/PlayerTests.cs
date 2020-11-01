@@ -13,15 +13,15 @@ namespace Stress.Game.Tests
         [TestMethod]
         public void CanCreatePlayer()
         {
-            var sut = new Player("Anders");
+            var sut = new Player("Anders", true);
             Assert.IsNotNull(sut);
         }
 
         [TestMethod]
         public void CanPickUpCards()
         {
-            var sut = new Player("Anders");
-            var deck = new DeckOfCards();
+            var sut = new Player("Anders", true);
+            var deck = StackOfCards.CreateFullDeckOfCards();
 
             Assert.IsNull(sut.OpenCards[0]);
             sut.PickUpCard(deck.DrawCard());

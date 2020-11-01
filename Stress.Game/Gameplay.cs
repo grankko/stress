@@ -7,12 +7,12 @@ namespace Stress.Game
 {
     public class Gameplay
     {
-        public DeckOfCards Deck { get; private set; }
+        public StackOfCards Deck { get; private set; }
         public Player PlayerOne { get; private set; }
         public Player PlayerTwo { get; private set; }
 
-        public OpenPileOfCards LeftPile { get; private set; }
-        public OpenPileOfCards RightPile { get; private set; }
+        public OpenStackOfCards LeftStack { get; private set; }
+        public OpenStackOfCards RightStack { get; private set; }
 
         public bool CanStart()
         {
@@ -52,13 +52,13 @@ namespace Stress.Game
         public void Draw()
         {
 
-            // Stale mate, players pick up the respective pile.
+            // Stale mate, players pick up the respective stack.
             if (PlayerOne.Hand.Cards.Count == 0 && PlayerTwo.Hand.Cards.Count == 0)
             {
-                while (LeftPile.Cards.Count > 0)
-                    PlayerOne.PickUpCard(LeftPile.DrawCard());
-                while (RightPile.Cards.Count > 0)
-                    PlayerTwo.PickUpCard(RightPile.DrawCard());
+                while (LeftStack.Cards.Count > 0)
+                    PlayerOne.PickUpCard(LeftStack.DrawCard());
+                while (RightStack.Cards.Count > 0)
+                    PlayerTwo.PickUpCard(RightStack.DrawCard());
             }
 
             // If one player has an empty hand, and the other player has more than one card on hand
@@ -69,48 +69,70 @@ namespace Stress.Game
             else if (PlayerTwo.Hand.Cards.Count == 0 && PlayerOne.Hand.Cards.Count > 1)
                 PlayerTwo.Hand.Cards.Push(PlayerOne.Hand.DrawCard());
 
-            LeftPile.PlayCard(PlayerOne.Hand.DrawCard(), true);
-            RightPile.PlayCard(PlayerTwo.Hand.DrawCard(), true);
+            LeftStack.AddCard(PlayerOne.Hand.DrawCard(), true);
+            RightStack.AddCard(PlayerTwo.Hand.DrawCard(), true);
         }
 
         /// <summary>
         /// Adds a player to the game. If both slots are filled, cards are dealt.
         /// </summary>
-        public Player AddPlayer(string nickName)
+        public void AddPlayer(string nickName)
         {
             if (string.IsNullOrWhiteSpace(nickName))
                 throw new ArgumentException($"'{nameof(nickName)}' cannot be null or whitespace", nameof(nickName));
 
-            var newPlayer = new Player(nickName);
-
             if (PlayerOne == null)
-                PlayerOne = newPlayer;
+                PlayerOne = new Player(nickName, true);
             else if (PlayerTwo == null)
             {
-                PlayerTwo = newPlayer;
+                PlayerTwo = new Player(nickName, false);
                 Deal();
             }
             else
                 throw new InvalidOperationException("The game already has two players");
-
-            return newPlayer;
         }
 
-        public void PlayCardOnPile(Player player, Card card, OpenPileOfCards pile)
+        public void PlayCardOnStack(Player player, Card card, OpenStackOfCards stack)
         {
-            if (pile.CanPlayCard(card))
+            if (stack.CanAddCard(card))
+                stack.AddCard(player.PlayOpenCard(card));
+        }
+
+        public void PlayerCallsStressEvent(Player player)
+        {
+            Player stressEventLoser;
+
+            if (LeftStack.TopCard.Rank == RightStack.TopCard.Rank)
             {
-                pile.PlayCard(player.DrawOpenCard(card));
+                // Legit stress event, calling player wins
+                if (player.IsPlayerOne)
+                    stressEventLoser = PlayerTwo;
+                else
+                    stressEventLoser = PlayerOne;
+            } else {
+                // Not a legit stress event, calling player loses
+                if (player.IsPlayerOne)
+                    stressEventLoser = PlayerOne;
+                else
+                    stressEventLoser = PlayerTwo;
             }
+
+            // Loser picks upp both stacks
+            while (LeftStack.Cards.Count > 0)
+                stressEventLoser.PickUpCard(LeftStack.DrawCard());
+            while (RightStack.Cards.Count > 0)
+                stressEventLoser.PickUpCard(RightStack.DrawCard());
+
+            Draw();
         }
 
         private void Initialize()
         {
-            Deck = new DeckOfCards();
+            Deck = StackOfCards.CreateFullDeckOfCards();
             Deck.Shuffle();
 
-            LeftPile = new OpenPileOfCards();
-            RightPile = new OpenPileOfCards();
+            LeftStack = new OpenStackOfCards();
+            RightStack = new OpenStackOfCards();
 
             PlayerOne = null;
             PlayerTwo = null;

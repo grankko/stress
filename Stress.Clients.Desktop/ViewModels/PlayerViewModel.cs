@@ -22,28 +22,35 @@ namespace Stress.Clients.Desktop.ViewModels
         public string NickName { get => _player.NickName; }
         public int CardsLeft { get => _player.Hand.Cards.Count; }
 
-        private bool _playLeftPile;
-        public bool PlayLeftPile
+        private bool _playLeftStack;
+        public bool PlayLeftStack
         {
-            get => _playLeftPile;
-            set => Set(nameof(PlayLeftPile), ref _playLeftPile, value);
+            get => _playLeftStack;
+            set => Set(nameof(PlayLeftStack), ref _playLeftStack, value);
         }
 
         public RelayCommand<Card> PlayCard { get; set; }
+        public RelayCommand CallStress { get; set; }
 
         public PlayerViewModel(Player player)
         {
             _player = player;
             InvalidateOpenCards();
-            PlayLeftPile = true;
+            PlayLeftStack = true;
 
             MessengerInstance.Register<DrawMessage>(this, OnDrawMessage);
-            PlayCard = new RelayCommand<Card>(ExecutePlayCard, CanPlayCard);
+            PlayCard = new RelayCommand<Card>(ExecutePlayCard);
+            CallStress = new RelayCommand(ExecuteCallStress);
+        }
+
+        private void ExecuteCallStress()
+        {
+            MessengerInstance.Send(new StressEventCalledMessage(_player));
         }
 
         private void ExecutePlayCard(Card card)
         {
-            MessengerInstance.Send(new PlayCardMessage(_player, card, _playLeftPile));
+            MessengerInstance.Send(new PlayCardMessage(_player, card, _playLeftStack));
             InvalidateOpenCards();
         }
 
@@ -51,11 +58,6 @@ namespace Stress.Clients.Desktop.ViewModels
         {
             OpenCards = new List<Card>(_player.OpenCards.Where(c => c != null));
             RaisePropertyChanged(nameof(OpenCards));
-        }
-
-        private bool CanPlayCard(Card card)
-        {
-            return true;
         }
 
         private void OnDrawMessage(DrawMessage message)

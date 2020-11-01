@@ -6,12 +6,12 @@ using System.Text;
 namespace Stress.Game.Cards.Tests
 {
     [TestClass]
-    public class PileOfCardsTests
+    public class StackOfCardsTests
     {
         [TestMethod]
         public void CanCreateDeck()
         {
-            var sut = new DeckOfCards();
+            var sut = StackOfCards.CreateFullDeckOfCards();
             Assert.IsNotNull(sut);
             Assert.AreEqual(sut.Cards.Count, 52);
         }
@@ -19,7 +19,7 @@ namespace Stress.Game.Cards.Tests
         [TestMethod]
         public void CanShuffleDeck()
         {
-            var sut = new DeckOfCards();
+            var sut = StackOfCards.CreateFullDeckOfCards();
             sut.Shuffle();
 
             Assert.AreEqual(sut.Cards.Count, 52);

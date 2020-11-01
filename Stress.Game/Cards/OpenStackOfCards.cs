@@ -5,34 +5,40 @@ using System.Text;
 
 namespace Stress.Game.Cards
 {
-    public class OpenPileOfCards : PileOfCards
+    /// <summary>
+    /// Represents a set of cards with the face up in the game of Stress.
+    /// The top card is the card that players can act on.
+    /// In case of a stress event, the slowest player must pick up these cards
+    /// and keep them on hand.
+    /// </summary>
+    public class OpenStackOfCards : StackOfCards
     {
         public Card TopCard { get { return Cards.Peek(); } }
 
-        public OpenPileOfCards() : base() { }
+        public OpenStackOfCards() : base() { }
 
         /// <summary>
-        /// Plays a specific card
+        /// Adds a specific card on the stack.
         /// </summary>
-        /// <param name="card">Card to play</param>
+        /// <param name="card">Card to add</param>
         /// <param name="isDraw">If game is in draw, all cards are playable</param>
-        public void PlayCard(Card card, bool isDraw = false)
+        public void AddCard(Card card, bool isDraw = false)
         {
             if (card is null)
                 throw new ArgumentNullException(nameof(card));
 
-            if (!CanPlayCard(card, isDraw))
+            if (!CanAddCard(card, isDraw))
                 throw new InvalidOperationException("Invalid move.");
 
             Cards.Push(card);
         }
 
         /// <summary>
-        /// Validates if a card is playable on the pile or not
+        /// Validates if a card is playable on the stack or not.
         /// </summary>
         /// <param name="card">Card to play</param>
         /// <param name="isDraw">If game is in draw, all cards are playable</param>
-        public bool CanPlayCard(Card card, bool isDraw = false)
+        public bool CanAddCard(Card card, bool isDraw = false)
         {
             if (card is null)
                 throw new ArgumentNullException(nameof(card));

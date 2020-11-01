@@ -35,13 +35,13 @@ namespace Stress.Game.Tests
             sut.AddPlayer("Anders");
             sut.AddPlayer("Edith");
 
-            Assert.IsTrue(sut.LeftPile.Cards.Count == 0);
-            Assert.IsTrue(sut.RightPile.Cards.Count == 0);
+            Assert.IsTrue(sut.LeftStack.Cards.Count == 0);
+            Assert.IsTrue(sut.RightStack.Cards.Count == 0);
 
             sut.Draw();
 
-            Assert.IsTrue(sut.LeftPile.Cards.Count == 1);
-            Assert.IsTrue(sut.RightPile.Cards.Count == 1);
+            Assert.IsTrue(sut.LeftStack.Cards.Count == 1);
+            Assert.IsTrue(sut.RightStack.Cards.Count == 1);
         }
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]

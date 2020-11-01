@@ -11,14 +11,14 @@ namespace Stress.Clients.Desktop.Messages
     {
         public Player Player { get; set; }
         public Card Card { get; set; }
-        public bool OnLeftPile { get; set; }
+        public bool PlayOnLeftStack { get; set; }
 
 
-        public PlayCardMessage(Player player, Card card, bool onLeftPile)
+        public PlayCardMessage(Player player, Card card, bool playOnLeftStack)
         {
             Player = player;
             Card = card;
-            OnLeftPile = onLeftPile;
+            PlayOnLeftStack = playOnLeftStack;
         }
     }
 }

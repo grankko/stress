@@ -7,35 +7,46 @@ namespace Stress.Game
 {
     public class Player
     {
-        public Guid Id { get; private set; }
         public string NickName { get; set; }
+        public bool IsPlayerOne { get; private set; }
 
+        /// <summary>
+        /// The 0 - 4 open cards a player has to act with
+        /// </summary>
         public Card[] OpenCards { get; private set; } = new Card[4];
 
-        public PileOfCards Hand { get; private set; }
+        /// <summary>
+        /// All closed cards a player has on hand. If an OpenCard slot is free, it will
+        /// be filled from this set of cards.
+        /// </summary>
+        public StackOfCards Hand { get; private set; }
 
-        public Player(string nickName)
+        public Player(string nickName, bool isPlayerOne)
         {
-            Id = Guid.NewGuid();
-
             if (string.IsNullOrWhiteSpace(nickName))
                 throw new ArgumentException($"'{nameof(nickName)}' cannot be null or whitespace", nameof(nickName));
 
             NickName = nickName;
+            IsPlayerOne = isPlayerOne;
 
-            Hand = new PileOfCards();
+            Hand = new StackOfCards();
         }
 
-        public Card DrawOpenCard(Card card)
+        /// <summary>
+        /// Plays an open card and refills if possible from the closed cards on hand.
+        /// </summary>
+        /// <param name="card">Card to play</param>
+        /// <returns>Played card</returns>
+        public Card PlayOpenCard(Card card)
         {
             var index = Array.IndexOf<Card>(OpenCards, card);
             if (index == -1)
                 throw new InvalidOperationException($"{NickName} does not have {card}");
 
-            return DrawOpenCard(index);
+            return PlayOpenCard(index);
         }
 
-        private Card DrawOpenCard(int cardIndex)
+        private Card PlayOpenCard(int cardIndex)
         {
             if (cardIndex > 3 || cardIndex < 0)
                 throw new InvalidOperationException("Player only has card slots 1 - 4.");
@@ -50,6 +61,10 @@ namespace Stress.Game
             return playedCard;
         }
 
+        /// <summary>
+        /// Pick up a card and fill open slot or add to closed cards on hand.
+        /// </summary>
+        /// <param name="card">Card to pick up.</param>
         public void PickUpCard(Card card)
         {
             if (OpenCards[0] == null)

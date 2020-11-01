@@ -5,13 +5,29 @@ using System.Text;
 
 namespace Stress.Game.Cards
 {
-    public class PileOfCards
+    /// <summary>
+    /// Represents any set of cards that you can shuffle and draw from.
+    /// </summary>
+    public class StackOfCards
     {
         public Stack<Card> Cards { get; private set; }
 
-        public PileOfCards()
+        public StackOfCards()
         {
             Cards = new Stack<Card>();
+        }
+
+        public static StackOfCards CreateFullDeckOfCards()
+        {
+            var fullDeck = new StackOfCards();
+            foreach (Suit suit in Enum.GetValues(typeof(Suit)))
+            {
+                for (int i = 2; i < 15; i++)
+                {
+                    fullDeck.Cards.Push(new Card(i, suit));
+                }
+            }
+            return fullDeck;
         }
 
         public Card DrawCard()
