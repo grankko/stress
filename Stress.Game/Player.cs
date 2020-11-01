@@ -1,6 +1,7 @@
 ﻿using Stress.Game.Cards;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Stress.Game
@@ -14,6 +15,10 @@ namespace Stress.Game
         /// The 0 - 4 open cards a player has to act with
         /// </summary>
         public Card[] OpenCards { get; private set; } = new Card[4];
+
+        public int ActiveOpenCards { get => OpenCards.Where(slot => slot != null).Count(); }
+
+        public bool HasWon { get => (ActiveOpenCards + Hand.Cards.Count()) == 0; }
 
         /// <summary>
         /// All closed cards a player has on hand. If an OpenCard slot is free, it will

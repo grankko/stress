@@ -1,6 +1,8 @@
 ﻿using Stress.Game.Cards;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace Stress.Game
@@ -13,6 +15,8 @@ namespace Stress.Game
 
         public OpenStackOfCards LeftStack { get; private set; }
         public OpenStackOfCards RightStack { get; private set; }
+
+        public event EventHandler PlayerWon;
 
         public bool CanStart()
         {
@@ -52,8 +56,8 @@ namespace Stress.Game
         public void Draw()
         {
 
-            // Stale mate, players pick up the respective stack.
-            if (PlayerOne.Hand.Cards.Count == 0 && PlayerTwo.Hand.Cards.Count == 0)
+            // Stale mate, players pick up the respective stack. Two cards are needed to do a draw.
+            if ((PlayerOne.Hand.Cards.Count + PlayerTwo.Hand.Cards.Count) < 2)
             {
                 while (LeftStack.Cards.Count > 0)
                     PlayerOne.PickUpCard(LeftStack.DrawCard());
@@ -96,6 +100,9 @@ namespace Stress.Game
         {
             if (stack.CanAddCard(card))
                 stack.AddCard(player.PlayOpenCard(card));
+
+            if (player.HasWon)
+                PlayerWon?.Invoke(player, new EventArgs());
         }
 
         public void PlayerCallsStressEvent(Player player)

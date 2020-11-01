@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using System.Windows;
 using System.Windows.Navigation;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -38,6 +39,8 @@ namespace Stress.Clients.Desktop.ViewModels
             _stressGameplay.AddPlayer("Anders");
             _stressGameplay.AddPlayer("Edith");
 
+            _stressGameplay.PlayerWon += StressGameplay_PlayerWon;
+
             _stressGameplay.Draw();
 
             PlayerOne = new PlayerViewModel(_stressGameplay.PlayerOne);
@@ -51,6 +54,13 @@ namespace Stress.Clients.Desktop.ViewModels
 
             MessengerInstance.Register<PlayCardMessage>(this, OnPlayCardReceived);
             MessengerInstance.Register<StressEventCalledMessage>(this, OnStressEventCalledReceived);
+        }
+
+        private void StressGameplay_PlayerWon(object sender, EventArgs e)
+        {
+            Player winner = (Player)sender;
+            MessageBox.Show($"{winner.NickName} won the game!", "We have a winner!", MessageBoxButton.OK, MessageBoxImage.Information);
+            ExecuteResetCommand();
         }
 
         private void OnStressEventCalledReceived(StressEventCalledMessage message)
