@@ -6,42 +6,77 @@
         xmlns:local="clr-namespace:Stress.Clients.Desktop"
         mc:Ignorable="d"
         Loaded="Window_Loaded"
-        Title="MainWindow" Height="450" Width="800">
+        x:Name="GameWindow"
+        Title="Game of Stress" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
-            <Button x:Name="PlayerOneSlotOne" Content="Card 1" Margin="5" Click="PlayerOneSlotOne_Click" />
-            <Button x:Name="PlayerOneSlotTwo" Content="Card 2" Margin="5" Click="PlayerOneSlotTwo_Click"  />
-            <Button x:Name="PlayerOneSlotThree" Content="Card 3" Margin="5" Click="PlayerOneSlotThree_Click" />
-            <Button x:Name="PlayerOneSlotFour" Content="Card 4" Margin="5" Click="PlayerOneSlotFour_Click" />
-            <RadioButton GroupName="PlayerOnePile" Content="Left" IsChecked="True" x:Name="PlayerOnePileLeft" />
-            <RadioButton GroupName="PlayerOnePile" Content="Right" x:Name="PlayerOnePileRight" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Label  Content="{Binding Path=PlayerOne.NickName}" />
+            <Label  Content="{Binding Path=PlayerOne.CardsLeft}" />
+        </StackPanel>        
+        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+            <ItemsControl ItemsSource="{Binding Path=PlayerOne.OpenCards}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Content="{Binding}"
+                                Command="{Binding ElementName=GameWindow, Path=DataContext.PlayerOne.PlayCard}"
+                                CommandParameter="{Binding}"
+                                Margin="5" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </StackPanel>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
-            <Button x:Name="LeftPile" Content="Card 1" Margin="5" />
-            <Button x:Name="RightPile" Content="Card 2" Margin="5" />
+        <StackPanel Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <RadioButton GroupName="PlayerOnePile" Content="Play left pile" IsChecked="{Binding Path=PlayerOne.PlayLeftPile}" />
+            <RadioButton GroupName="PlayerOnePile" Content="Play right pile" />
         </StackPanel>
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
-            <Button x:Name="PlayerTwoSlotOne" Content="Card 1" Margin="5" Click="PlayerTwoSlotOne_Click" />
-            <Button x:Name="PlayerTwoSlotTwo" Content="Card 2" Margin="5" Click="PlayerTwoSlotTwo_Click"  />
-            <Button x:Name="PlayerTwoSlotThree" Content="Card 3" Margin="5" Click="PlayerTwoSlotThree_Click" />
-            <Button x:Name="PlayerTwoSlotFour" Content="Card 4" Margin="5" Click="PlayerTwoSlotFour_Click" />
-            <RadioButton GroupName="PlayerTwoPile" Content="Left" IsChecked="True" x:Name="PlayerTwoPileLeft" />
-            <RadioButton GroupName="PlayerTwoPile" Content="Right" x:Name="PlayerTwoPileRight" />            
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+            <Button x:Name="LeftPile" Content="{Binding Path=LeftPileTopCard}" Margin="5" />
+            <Button x:Name="RightPile" Content="{Binding Path=RightPileTopCard}" Margin="5" />
         </StackPanel>
-        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
-            <Button x:Name="Draw" Click="Draw_Click" Content="Draw" />
-            <Button x:Name="Reset" Click="Reset_Click" Content="Reset" />
-            <StackPanel Orientation="Vertical">
-                <Label x:Name="PlayerOneCardsLeft" Content="NumberOfCards" />
-                <Label x:Name="PlayerTwoCardsLeft" Content="NumberOfCards" />
-            </StackPanel>
-            
+        <StackPanel Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Label  Content="{Binding Path=PlayerTwo.NickName}" />
+            <Label  Content="{Binding Path=PlayerTwo.CardsLeft}" />
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+            <ItemsControl ItemsSource="{Binding Path=PlayerTwo.OpenCards}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Content="{Binding}"
+                                Command="{Binding ElementName=GameWindow, Path=DataContext.PlayerTwo.PlayCard}"
+                                CommandParameter="{Binding}"
+                                Margin="5" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <RadioButton GroupName="PlayerTwoPile" Content="Play left pile" IsChecked="{Binding Path=PlayerTwo.PlayLeftPile}" />
+            <RadioButton GroupName="PlayerTwoPile" Content="Play right pile" />
+        </StackPanel>
+        <StackPanel Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
+            <Button Content="Draw" Margin="5" Command="{Binding Path=DrawCommand}" />
+            <Button Content="Reset" Margin="5"  Command="{Binding Path=ResetCommand}" />
         </StackPanel>
     </Grid>
 </Window>
