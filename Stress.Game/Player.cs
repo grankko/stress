@@ -10,10 +10,7 @@ namespace Stress.Game
         public Guid Id { get; private set; }
         public string NickName { get; set; }
 
-        public Card CardSlot1 { get; set; }
-        public Card CardSlot2 { get; set; }
-        public Card CardSlot3 { get; set; }
-        public Card CardSlot4 { get; set; }
+        public Card[] OpenCards { get; private set; } = new Card[4];
 
         public PileOfCards Hand { get; private set; }
 
@@ -29,18 +26,43 @@ namespace Stress.Game
             Hand = new PileOfCards();
         }
 
+        public Card DrawOpenCard(Card card)
+        {
+            var index = Array.IndexOf<Card>(OpenCards, card);
+            if (index == -1)
+                throw new InvalidOperationException($"{NickName} does not have {card}");
+
+            return DrawOpenCard(index);
+        }
+
+        private Card DrawOpenCard(int cardIndex)
+        {
+            if (cardIndex > 3 || cardIndex < 0)
+                throw new InvalidOperationException("Player only has card slots 1 - 4.");
+
+            Card playedCard = OpenCards[cardIndex];
+
+            if (Hand.Cards.Count > 0)
+                OpenCards[cardIndex] = Hand.DrawCard();
+            else
+                OpenCards[cardIndex] = null;
+
+            return playedCard;
+        }
+
         public void PickUpCard(Card card)
         {
-            if (CardSlot1 == null)
-                CardSlot1 = card;
-            else if (CardSlot2 == null)
-                CardSlot2 = card;
-            else if (CardSlot3 == null)
-                CardSlot3 = card;
-            else if (CardSlot4 == null)
-                CardSlot4 = card;
+            if (OpenCards[0] == null)
+                OpenCards[0] = card;
+            else if (OpenCards[1] == null)
+                OpenCards[1] = card;
+            else if (OpenCards[2] == null)
+                OpenCards[2] = card;
+            else if (OpenCards[3] == null)
+                OpenCards[3] = card;
             else
                 Hand.Cards.Push(card);
         }
+
     }
 }

@@ -27,18 +27,6 @@ namespace Stress.Game
             Initialize();
         }
 
-        private void Initialize()
-        {
-            Deck = new DeckOfCards();
-            Deck.Shuffle();
-
-            LeftPile = new OpenPileOfCards();
-            RightPile = new OpenPileOfCards();
-
-            PlayerOne = null;
-            PlayerTwo = null;
-        }
-
         /// <summary>
         /// If the players are ready, deal the full deck of cards to the players.
         /// </summary>
@@ -81,8 +69,8 @@ namespace Stress.Game
             else if (PlayerTwo.Hand.Cards.Count == 0 && PlayerOne.Hand.Cards.Count > 1)
                 PlayerTwo.Hand.Cards.Push(PlayerOne.Hand.DrawCard());
 
-            LeftPile.PlayCard(PlayerOne.Hand.DrawCard());
-            RightPile.PlayCard(PlayerTwo.Hand.DrawCard());
+            LeftPile.PlayCard(PlayerOne.Hand.DrawCard(), true);
+            RightPile.PlayCard(PlayerTwo.Hand.DrawCard(), true);
         }
 
         /// <summary>
@@ -106,6 +94,26 @@ namespace Stress.Game
                 throw new InvalidOperationException("The game already has two players");
 
             return newPlayer;
+        }
+
+        public void PlayCardOnPile(Player player, Card card, OpenPileOfCards pile)
+        {
+            if (pile.CanPlayCard(card))
+            {
+                pile.PlayCard(player.DrawOpenCard(card));
+            }
+        }
+
+        private void Initialize()
+        {
+            Deck = new DeckOfCards();
+            Deck.Shuffle();
+
+            LeftPile = new OpenPileOfCards();
+            RightPile = new OpenPileOfCards();
+
+            PlayerOne = null;
+            PlayerTwo = null;
         }
     }
 }

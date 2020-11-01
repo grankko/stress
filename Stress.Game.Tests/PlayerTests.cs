@@ -23,25 +23,25 @@ namespace Stress.Game.Tests
             var sut = new Player("Anders");
             var deck = new DeckOfCards();
 
-            Assert.IsNull(sut.CardSlot1);
+            Assert.IsNull(sut.OpenCards[0]);
             sut.PickUpCard(deck.DrawCard());
             Assert.IsTrue(sut.Hand.Cards.Count == 0);
-            Assert.IsNotNull(sut.CardSlot1);
+            Assert.IsNotNull(sut.OpenCards[0]);
 
-            Assert.IsNull(sut.CardSlot2);
+            Assert.IsNull(sut.OpenCards[1]);
             sut.PickUpCard(deck.DrawCard());
             Assert.IsTrue(sut.Hand.Cards.Count == 0);
-            Assert.IsNotNull(sut.CardSlot2);
+            Assert.IsNotNull(sut.OpenCards[1]);
 
-            Assert.IsNull(sut.CardSlot3);
+            Assert.IsNull(sut.OpenCards[2]);
             sut.PickUpCard(deck.DrawCard());
             Assert.IsTrue(sut.Hand.Cards.Count == 0);
-            Assert.IsNotNull(sut.CardSlot3);
+            Assert.IsNotNull(sut.OpenCards[2]);
 
-            Assert.IsNull(sut.CardSlot4);
+            Assert.IsNull(sut.OpenCards[3]);
             sut.PickUpCard(deck.DrawCard());
             Assert.IsTrue(sut.Hand.Cards.Count == 0);
-            Assert.IsNotNull(sut.CardSlot4);
+            Assert.IsNotNull(sut.OpenCards[3]);
 
             sut.PickUpCard(deck.DrawCard());
             Assert.IsTrue(sut.Hand.Cards.Count == 1);
