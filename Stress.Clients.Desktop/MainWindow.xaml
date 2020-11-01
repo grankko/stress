@@ -1,0 +1,47 @@
+﻿<Window x:Class="Stress.Clients.Desktop.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Stress.Clients.Desktop"
+        mc:Ignorable="d"
+        Loaded="Window_Loaded"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+            <Button x:Name="PlayerOneSlotOne" Content="Card 1" Margin="5" Click="PlayerOneSlotOne_Click" />
+            <Button x:Name="PlayerOneSlotTwo" Content="Card 2" Margin="5" Click="PlayerOneSlotTwo_Click"  />
+            <Button x:Name="PlayerOneSlotThree" Content="Card 3" Margin="5" Click="PlayerOneSlotThree_Click" />
+            <Button x:Name="PlayerOneSlotFour" Content="Card 4" Margin="5" Click="PlayerOneSlotFour_Click" />
+            <RadioButton GroupName="PlayerOnePile" Content="Left" IsChecked="True" x:Name="PlayerOnePileLeft" />
+            <RadioButton GroupName="PlayerOnePile" Content="Right" x:Name="PlayerOnePileRight" />
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+            <Button x:Name="LeftPile" Content="Card 1" Margin="5" />
+            <Button x:Name="RightPile" Content="Card 2" Margin="5" />
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+            <Button x:Name="PlayerTwoSlotOne" Content="Card 1" Margin="5" Click="PlayerTwoSlotOne_Click" />
+            <Button x:Name="PlayerTwoSlotTwo" Content="Card 2" Margin="5" Click="PlayerTwoSlotTwo_Click"  />
+            <Button x:Name="PlayerTwoSlotThree" Content="Card 3" Margin="5" Click="PlayerTwoSlotThree_Click" />
+            <Button x:Name="PlayerTwoSlotFour" Content="Card 4" Margin="5" Click="PlayerTwoSlotFour_Click" />
+            <RadioButton GroupName="PlayerTwoPile" Content="Left" IsChecked="True" x:Name="PlayerTwoPileLeft" />
+            <RadioButton GroupName="PlayerTwoPile" Content="Right" x:Name="PlayerTwoPileRight" />            
+        </StackPanel>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+            <Button x:Name="Draw" Click="Draw_Click" Content="Draw" />
+            <Button x:Name="Reset" Click="Reset_Click" Content="Reset" />
+            <StackPanel Orientation="Vertical">
+                <Label x:Name="PlayerOneCardsLeft" Content="NumberOfCards" />
+                <Label x:Name="PlayerTwoCardsLeft" Content="NumberOfCards" />
+            </StackPanel>
+            
+        </StackPanel>
+    </Grid>
+</Window>

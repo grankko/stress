@@ -21,7 +21,7 @@ namespace Stress.Game.Cards
             if (card is null)
                 throw new ArgumentNullException(nameof(card));
 
-            if (!CanPlayCard(card))
+            if (!CanPlayCard(card, isDraw))
                 throw new InvalidOperationException("Invalid move.");
 
             Cards.Push(card);
