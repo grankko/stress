@@ -13,7 +13,7 @@ namespace Stress.Game.Cards
     /// </summary>
     public class OpenStackOfCards : StackOfCards
     {
-        public Card TopCard { get { return Cards.Peek(); } }
+        public Card TopCard { get { return Cards.Count == 0 ? null : Cards.Peek(); } }
 
         public OpenStackOfCards() : base() { }
 

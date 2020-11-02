@@ -1,0 +1,49 @@
+﻿html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+}
+
+.startPanel {
+    width: 400px;
+    height: 350px;
+    position: absolute;
+}
+
+.startOptionPanel {
+    width: 390px;
+    height: 140px;
+    border: solid 1px black;
+}
+
+.gamePanel {
+    visibility: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-gap: 5px 5px;
+    grid-template-areas: ". . ." ". . ." ". . .";
+    width: 100vw;
+    height: 100vh;
+}
+
+.playerOnePanel {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.tablePanel {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.playerTwoPanel {
+    grid-column: 2;
+    grid-row: 3;
+}
+
+.playingCard {
+    font-size: 150px;
+}

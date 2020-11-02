@@ -1,4 +1,6 @@
-﻿using Stress.Server.Models;
+﻿using Microsoft.AspNetCore.SignalR;
+using Stress.Server.Hubs;
+using Stress.Server.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +11,17 @@ namespace Stress.Server.Services
     public class SessionService
     {
         public Dictionary<string, GameSession> GameSessions { get; private set; }
+        private IHubContext<StressHub> _hubContext;
 
-        public SessionService()
+        public SessionService(IHubContext<StressHub> hubContext)
         {
             GameSessions = new Dictionary<string, GameSession>();
+            _hubContext = hubContext;
         }
 
         public string CreateNewGameSession()
         {
-            var session = new GameSession(GenerateNewSessionKey());
+            var session = new GameSession(GenerateNewSessionKey(), _hubContext);
             GameSessions.Add(session.Key, session);
             return session.Key;
         }

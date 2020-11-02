@@ -20,7 +20,7 @@ namespace Stress.Game
 
         public bool CanStart()
         {
-            if (Deck.Cards.Count == 52 && PlayerOne != null && PlayerTwo != null)
+            if (PlayerOne != null && PlayerTwo != null)
                 return true;
 
             return false;

@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Create game</title>
+    <link href="styles/styels.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="startPanel">
+        <div class="startOptionPanel" id="createGamePanel">
+            <input id="create_nickName" type="text" placeholder="Enter your name.." />
+            <button id="createGameButton">Create game</button>
+            <span id="gameCode"></span>
+        </div>
+        <div class="startOptionPanel" id="joinGamePanel">
+            <input id="join_nickName" type="text" placeholder="Enter your name.." />
+            <input id="join_sessionKey" type="text" placeholder="Enter the game key.." />
+            <button id="joinGameButton">Join game</button>
+        </div>
+    </div>
+
+    <div class="gamePanel">
+        <div class="playerTwoPanel">
+            <span class="playingCard" id="playerTwoSlot1">&#127137;</span>
+            <span class="playingCard" id="playerTwoSlot2">&#127137;</span>
+            <span class="playingCard" id="playerTwoSlot3">&#127137;</span>
+            <span class="playingCard" id="playerTwoSlot4">&#127137;</span>
+        </div>
+        <div class="tablePanel">
+            <span class="playingCard" id="tableSlot1">&#127137;</span>
+            <span class="playingCard" id="tableSlot2">&#127137;</span>
+        </div>
+        <div class="playerOnePanel">
+            <span class="playingCard" id="playerOneSlot1">&#127137;</span>
+            <span class="playingCard" id="playerOneSlot2">&#127137;</span>
+            <span class="playingCard" id="playerOneSlot3">&#127137;</span>
+            <span class="playingCard" id="playerOneSlot4">&#127137;</span>
+        </div>
+    </div>
+
+    <script src="js/signalr/dist/browser/signalr.js"></script>
+    <script src="js/gameService.js"></script>
+</body>
+</html>

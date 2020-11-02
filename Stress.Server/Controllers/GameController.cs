@@ -10,6 +10,9 @@ using Stress.Server.Services;
 
 namespace Stress.Server.Controllers
 {
+    /// <summary>
+    /// Delete this? Everything seems to happen through the Hub and HubContext
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class GameController : ControllerBase

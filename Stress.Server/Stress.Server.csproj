@@ -8,5 +8,9 @@
     <ProjectReference Include="..\Stress.Game\Stress.Game.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\Index.html" />
+  </ItemGroup>
+
 
 </Project>
