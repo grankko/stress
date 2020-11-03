@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace Stress.Game.Cards
 {
@@ -6,6 +7,29 @@ namespace Stress.Game.Cards
     {
         public int Rank { get; private set; }
         public Suit Suit { get; private set; }
+
+        public string ShortName
+        { 
+            get {
+                string result = string.Empty;
+                switch (Suit)
+                {
+                    case Suit.Clubs:
+                        result = $"C{Rank}";
+                        break;
+                    case Suit.Diamonds:
+                        result = $"D{Rank}";
+                        break;
+                    case Suit.Hearts:
+                        result = $"H{Rank}";
+                        break;
+                    case Suit.Spades:
+                        result = $"S{Rank}";
+                        break;
+                }
+                return result;
+            }
+        }
 
         public Card(int rank, Suit suit)
         {

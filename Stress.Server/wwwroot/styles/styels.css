@@ -29,7 +29,7 @@ body {
     height: 100vh;
 }
 
-.playerOnePanel {
+.opponentPanel {
     grid-column: 2;
     grid-row: 1;
 }
@@ -39,7 +39,7 @@ body {
     grid-row: 2;
 }
 
-.playerTwoPanel {
+.playerPanel {
     grid-column: 2;
     grid-row: 3;
 }

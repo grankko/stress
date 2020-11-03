@@ -1,6 +1,5 @@
 ﻿namespace Stress.Server.Models
 {
-
     public class GameState
     {
         // todo: introduce model of Card

@@ -32,8 +32,8 @@ namespace Stress.Server.Models
             var state = new GameState();
             state.PlayerOneState = GetStateOfPlayer(_gameplay.PlayerOne);
             state.PlayerTwoState = GetStateOfPlayer(_gameplay.PlayerTwo);
-            state.LeftStackTopCard = _gameplay.LeftStack.TopCard?.ToString();
-            state.RightStackTopCard = _gameplay.RightStack.TopCard?.ToString();
+            state.LeftStackTopCard = _gameplay.LeftStack.TopCard?.ShortName;
+            state.RightStackTopCard = _gameplay.RightStack.TopCard?.ShortName;
             return state;
         }
 
@@ -42,10 +42,10 @@ namespace Stress.Server.Models
             var state = new PlayerState();
             state.NickName = player.NickName;
             state.CardsLeft = player.Hand.Cards.Count;
-            state.CardSlot1 = player.OpenCards[0]?.ToString();
-            state.CardSlot2 = player.OpenCards[1]?.ToString();
-            state.CardSlot3 = player.OpenCards[2]?.ToString();
-            state.CardSlot4 = player.OpenCards[3]?.ToString();
+            state.CardSlot1 = player.OpenCards[0]?.ShortName;
+            state.CardSlot2 = player.OpenCards[1]?.ShortName;
+            state.CardSlot3 = player.OpenCards[2]?.ShortName;
+            state.CardSlot4 = player.OpenCards[3]?.ShortName;
             return state;
         }
     }
