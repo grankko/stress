@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Stress.Game;
+using Stress.Game.Cards;
 using Stress.Server.Hubs;
 using System;
 
@@ -19,14 +20,29 @@ namespace Stress.Server.Models
             _hubContext = hubContext;
         }
 
-        public void AddPlayer(string nickName)
+        public async void AddPlayer(string nickName)
         {
             _gameplay.AddPlayer(nickName);
             if (_gameplay.CanStart())
-                _hubContext.Clients.Group(Key).SendAsync("gameStateChanged", GetStateOfPlay());
+                await _hubContext.Clients.Group(Key).SendAsync("gameStateChanged", GetStateOfPlay());
         }
 
-        private GameState GetStateOfPlay()
+        public void ExecutePlayerAction(int playerNumber, int slotNumber, bool isLeftStack)
+        {
+            var player = _gameplay.PlayerOne;
+            if (playerNumber == 2)
+                player = _gameplay.PlayerTwo;
+
+            var stack = _gameplay.LeftStack;
+            if (!isLeftStack)
+                stack = _gameplay.RightStack;
+
+            Card cardToPlay = player.OpenCards[slotNumber - 1];
+            _gameplay.PlayCardOnStack(player, cardToPlay, stack);
+
+        }
+
+        public GameState GetStateOfPlay()
         {
             // todo: introduce proper models
             var state = new GameState();

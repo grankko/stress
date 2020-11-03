@@ -27,14 +27,17 @@
             <span class="playingCard" id="opponentSlot4">&#127137;</span>
         </div>
         <div class="tablePanel">
-            <span class="playingCard" id="tableSlot1">&#127137;</span>
-            <span class="playingCard" id="tableSlot2">&#127137;</span>
+            <span class="playingCard" id="leftStack" data-leftstack="true" ondragover="allowDrop(event)">&#127137;</span>
+            <span class="playingCard" id="rightStack" data-leftstack="false" ondragover="allowDrop(event)">&#127137;</span>
         </div>
         <div class="playerPanel">
-            <span class="playingCard" id="playerSlot1">&#127137;</span>
-            <span class="playingCard" id="playerSlot2">&#127137;</span>
-            <span class="playingCard" id="playerSlot3">&#127137;</span>
-            <span class="playingCard" id="playerSlot4">&#127137;</span>
+            <span class="playingCard" id="playerSlot1" data-slot="1" draggable="true" ondragstart="drag(event)">&#127137;</span>
+            <span class="playingCard" id="playerSlot2" data-slot="2" draggable="true" ondragstart="drag(event)">&#127137;</span>
+            <span class="playingCard" id="playerSlot3" data-slot="3" draggable="true" ondragstart="drag(event)">&#127137;</span>
+            <span class="playingCard" id="playerSlot4" data-slot="4" draggable="true" ondragstart="drag(event)">&#127137;</span>
+        </div>
+        <div class="playerOptions">
+            <button id="drawOptionButton">Draw</button>
         </div>
     </div>
 

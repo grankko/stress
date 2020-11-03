@@ -27,13 +27,20 @@ namespace Stress.Server.Hubs
             return sessionKey;
         }
 
+        public async void ExecutePlayerAction(string sessionKey, int playerNumber, int slotNumber, bool isLeftStack)
+        {
+            var session = _sessionService.GameSessions[sessionKey];
+            session.ExecutePlayerAction(playerNumber, slotNumber, isLeftStack);
+            await Clients.Group(sessionKey).SendAsync("gameStateChanged", session.GetStateOfPlay());
+        }
+
         public async void JoinGameSession(string nickName, string sessionKey)
         {
             if (!_sessionService.GameSessions.ContainsKey(sessionKey))
                 throw new HubException($"{sessionKey} does not exist.");
 
             var session = _sessionService.GameSessions[sessionKey];
-            await this.Groups.AddToGroupAsync(this.Context.ConnectionId, sessionKey);
+            await Groups.AddToGroupAsync(this.Context.ConnectionId, sessionKey);
             session.AddPlayer(nickName);
             await Clients.Group(sessionKey).SendAsync("infoMessage", $"{nickName} joined the game {sessionKey}.");
         }

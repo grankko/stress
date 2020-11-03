@@ -30,25 +30,5 @@ namespace Stress.Server.Controllers
         {
             return _sessionService.GameSessions.Values;
         }
-
-        [HttpPost("create")]
-        public IActionResult CreateNewSession([FromBody]string playerName)
-        {
-            var sessionKey = _sessionService.CreateNewGameSession();
-            _sessionService.GameSessions[sessionKey].AddPlayer(playerName);
-            return Ok(sessionKey);
-        }
-
-        [HttpPost("join")]
-        public IActionResult JoinSession(JoinGameModel request)
-        {
-
-            if (!_sessionService.GameSessions.ContainsKey(request.SessionKey))
-                return NotFound();
-
-            var session = _sessionService.GameSessions[request.SessionKey];
-            session.AddPlayer(request.PlayerName);
-            return Ok();
-        }
     }
 }

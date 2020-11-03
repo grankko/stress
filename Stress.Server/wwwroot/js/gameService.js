@@ -4,6 +4,7 @@ function showGame() {
     for (let el of document.querySelectorAll('.gamePanel')) el.style.visibility = 'visible';
 }
 var playerNumber = 0;
+var currentSessionKey = '';
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -24,6 +25,18 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(function () {
             console.log('connection started.');
 
+            function drop(event) {
+                event.preventDefault();
+                var cardSlot = event.dataTransfer.getData("text");
+                var isLeftStack = event.target.dataset.leftstack;
+                event.dataTransfer.clearData();
+
+                connection.invoke('executePlayerAction', currentSessionKey, playerNumber, parseInt(cardSlot), (isLeftStack === 'true'));
+            }
+
+            $('leftStack').addEventListener('drop', drop);
+            $('rightStack').addEventListener('drop', drop);
+
             // todo: implement drag and drop from open card to stacks and send event to Hub
 
             // todo: implement stress button and send event to Hub
@@ -39,6 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     $('joinGamePanel').style.visibility = 'hidden';
                     $('createGameButton').disabled = true;
                     playerNumber = 1;
+                    currentSessionKey = sessionKey;
                 });
 
                 event.preventDefault();
@@ -51,6 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 playerNumber = 2;
 
                 connection.invoke('joinGameSession', nickName, sessionKey).then(function () {
+                    currentSessionKey = sessionKey;
                     showGame();
                 });
 
@@ -63,6 +78,14 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 });
 
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.dataset.slot);
+}
+
 function updateBoardFromServerState(state) {
     var playerOneElementIdTemplate = 'playerSlot';
     var playerTwoElementIdTemplate = 'opponentSlot';
@@ -73,27 +96,41 @@ function updateBoardFromServerState(state) {
 
     $(`${playerOneElementIdTemplate}1`).innerText = cardShortHandJsRepresentation.get(state.playerOneState.cardSlot1).char;
     $(`${playerOneElementIdTemplate}1`).style.color = cardShortHandJsRepresentation.get(state.playerOneState.cardSlot1).color;
+    $(`${playerOneElementIdTemplate}1`).dataset.cardShortHand = state.playerOneState.cardSlot1;
+
     $(`${playerOneElementIdTemplate}2`).innerText = cardShortHandJsRepresentation.get(state.playerOneState.cardSlot2).char;
     $(`${playerOneElementIdTemplate}2`).style.color = cardShortHandJsRepresentation.get(state.playerOneState.cardSlot2).color;
+    $(`${playerOneElementIdTemplate}2`).dataset.cardShortHand = state.playerOneState.cardSlot2;
+
     $(`${playerOneElementIdTemplate}3`).innerText = cardShortHandJsRepresentation.get(state.playerOneState.cardSlot3).char;
     $(`${playerOneElementIdTemplate}3`).style.color = cardShortHandJsRepresentation.get(state.playerOneState.cardSlot3).color;
+    $(`${playerOneElementIdTemplate}3`).dataset.cardShortHand = state.playerOneState.cardSlot3;
+
     $(`${playerOneElementIdTemplate}4`).innerText = cardShortHandJsRepresentation.get(state.playerOneState.cardSlot4).char;
     $(`${playerOneElementIdTemplate}4`).style.color = cardShortHandJsRepresentation.get(state.playerOneState.cardSlot4).color;
+    $(`${playerOneElementIdTemplate}4`).dataset.cardShortHand = state.playerOneState.cardSlot4;
 
     $(`${playerTwoElementIdTemplate}1`).innerText = cardShortHandJsRepresentation.get(state.playerTwoState.cardSlot1).char;
     $(`${playerTwoElementIdTemplate}1`).style.color = cardShortHandJsRepresentation.get(state.playerTwoState.cardSlot1).color;
+    $(`${playerTwoElementIdTemplate}1`).dataset.cardShortHand = state.playerTwoState.cardSlot1;
+
     $(`${playerTwoElementIdTemplate}2`).innerText = cardShortHandJsRepresentation.get(state.playerTwoState.cardSlot2).char;
     $(`${playerTwoElementIdTemplate}2`).style.color = cardShortHandJsRepresentation.get(state.playerTwoState.cardSlot2).color;
+    $(`${playerTwoElementIdTemplate}2`).dataset.cardShortHand = state.playerTwoState.cardSlot2;
+
     $(`${playerTwoElementIdTemplate}3`).innerText = cardShortHandJsRepresentation.get(state.playerTwoState.cardSlot3).char;
     $(`${playerTwoElementIdTemplate}3`).style.color = cardShortHandJsRepresentation.get(state.playerTwoState.cardSlot3).color;
+    $(`${playerTwoElementIdTemplate}3`).dataset.cardShortHand = state.playerTwoState.cardSlot3;
+
     $(`${playerTwoElementIdTemplate}4`).innerText = cardShortHandJsRepresentation.get(state.playerTwoState.cardSlot4).char;
     $(`${playerTwoElementIdTemplate}4`).style.color = cardShortHandJsRepresentation.get(state.playerTwoState.cardSlot4).color;
+    $(`${playerTwoElementIdTemplate}4`).dataset.cardShortHand = state.playerTwoState.cardSlot4;
 
-    $('tableSlot1').innerText = cardShortHandJsRepresentation.get(state.leftStackTopCard).char;
-    $('tableSlot1').style.color = cardShortHandJsRepresentation.get(state.leftStackTopCard).color;
+    $('leftStack').innerText = cardShortHandJsRepresentation.get(state.leftStackTopCard).char;
+    $('leftStack').style.color = cardShortHandJsRepresentation.get(state.leftStackTopCard).color;
 
-    $('tableSlot2').innerText = cardShortHandJsRepresentation.get(state.rightStackTopCard).char;
-    $('tableSlot2').style.color = cardShortHandJsRepresentation.get(state.rightStackTopCard).color;
+    $('rightStack').innerText = cardShortHandJsRepresentation.get(state.rightStackTopCard).char;
+    $('rightStack').style.color = cardShortHandJsRepresentation.get(state.rightStackTopCard).color;
 }
 
 const cardShortHandJsRepresentation = new Map();

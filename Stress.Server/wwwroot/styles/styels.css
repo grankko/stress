@@ -21,7 +21,7 @@ body {
 .gamePanel {
     visibility: hidden;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 3fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
     grid-gap: 5px 5px;
     grid-template-areas: ". . ." ". . ." ". . .";
@@ -41,6 +41,11 @@ body {
 
 .playerPanel {
     grid-column: 2;
+    grid-row: 3;
+}
+
+.playerOptions {
+    grid-column: 3;
     grid-row: 3;
 }
 
