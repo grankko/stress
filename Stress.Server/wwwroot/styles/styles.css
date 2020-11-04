@@ -23,8 +23,9 @@ button {
     font-size: large;
 }
 
-h1 {
-    font-size: 1.7rem;
+.stressButton {
+    background-color: #ff0000;
+    padding: 30px 40px;
 }
 
 input[type=text] {
@@ -87,6 +88,11 @@ input[type=text] {
 
 .tablePanel {
     grid-column: 2;
+    grid-row: 2;
+}
+
+.stressPanel {
+    grid-column: 3;
     grid-row: 2;
 }
 

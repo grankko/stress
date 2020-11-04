@@ -29,7 +29,7 @@ namespace Stress.Server
         {
             services.AddControllers();
             services.AddSignalR();
-            services.AddSingleton<SessionService>();
+            services.AddSingleton<SessionManagementService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

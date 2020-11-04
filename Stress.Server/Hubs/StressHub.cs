@@ -10,9 +10,9 @@ namespace Stress.Server.Hubs
 {
     public class StressHub : Hub
     {
-        private readonly SessionService _sessionService;
+        private readonly SessionManagementService _sessionService;
 
-        public StressHub(SessionService sessionService)
+        public StressHub(SessionManagementService sessionService)
         {
             _sessionService = sessionService;
         }
@@ -60,7 +60,10 @@ namespace Stress.Server.Hubs
 
         public async void PlayerCallsStress(string sessionKey, int playerNumber)
         {
-            throw new NotImplementedException();
+            var session = _sessionService.GameSessions[sessionKey];
+            session.PlayerCallsStress(playerNumber);
+
+            await Clients.Group(sessionKey).SendAsync("gameStateChanged", session.GetStateOfPlay());
         }
     }
 }

@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Stress.Server.Services
 {
-    public class SessionService
+    public class SessionManagementService
     {
         public Dictionary<string, GameSessionService> GameSessions { get; private set; }
         
-        public SessionService()
+        public SessionManagementService()
         {
             GameSessions = new Dictionary<string, GameSessionService>();
         }

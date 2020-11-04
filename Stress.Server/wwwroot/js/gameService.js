@@ -43,14 +43,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
 
+            // Assign drop handlers to stacks
             $('leftStack').addEventListener('drop', drop);
             $('rightStack').addEventListener('drop', drop);
 
+            // Initiate draw action when clicking own stack, indicate that draw is requested by opacity
             $('playerHand').addEventListener('click', function (event) {
                 if (!playerWantsToDraw) {
                     $('playerHand').style.opacity = '0.5';
                     connection.invoke('playerWantsToDraw', currentSessionKey, playerNumber);
                 }
+            });
+
+            $('callStressEventButton').addEventListener('click', function (event) {
+                if (openingDrawOccured)
+                    connection.invoke('playerCallsStress', currentSessionKey, playerNumber);
             });
 
             // todo: implement stress button and send event to Hub
@@ -64,6 +71,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     $('joinGamePanel').style.display = 'none';
                     $('loadingPanel').style.display = 'block';
                     $('createGameButton').disabled = true;
+
+                    // Player who creates the game is Player One
                     playerNumber = 1;
                     currentSessionKey = sessionKey;
                 });
@@ -75,6 +84,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 var nickName = $('join_nickName').value;
                 var sessionKey = $('join_sessionKey').value;
+
+                // Player who joins the game is Player Two
                 playerNumber = 2;
 
                 connection.invoke('joinGameSession', nickName, sessionKey).then(function () {
@@ -137,9 +148,13 @@ function updateBoardFromServerState(state) {
 
 // Set color and card character of card slot
 function updateCardSlotFromState(elementId, card) {
-    $(elementId).innerText = cardShortHandJsRepresentation.get(card).char;
-    $(elementId).style.color = cardShortHandJsRepresentation.get(card).color;
-    $(elementId).dataset.cardShortHand = card;
+    if (card == null) {
+        $(elementId).innerText = '';
+    } else {
+        $(elementId).innerText = cardShortHandJsRepresentation.get(card).char;
+        $(elementId).style.color = cardShortHandJsRepresentation.get(card).color;
+        $(elementId).dataset.cardShortHand = card;
+    }
 }
 
 // Hide join/create panel and show game panel
@@ -171,7 +186,7 @@ function drag(ev) {
     ev.dataTransfer.setData("text", ev.target.dataset.slot);
 }
 
-// translate short representation of card to card character
+// Translates short string representation of card to card character
 const cardShortHandJsRepresentation = new Map();
 cardShortHandJsRepresentation.set("S14", { char: "\uD83C\uDCA1", color: "#000000" });
 cardShortHandJsRepresentation.set("S2",  { char: "\uD83C\uDCA2", color: "#000000" });

@@ -78,6 +78,14 @@ namespace Stress.Server.Services
             return state;
         }
 
+        public void PlayerCallsStress(int playerNumber)
+        {
+            if (playerNumber == 1)
+                _gameplay.PlayerCallsStressEvent(_gameplay.PlayerOne); // todo: ugly
+            else if (playerNumber == 2)
+                _gameplay.PlayerCallsStressEvent(_gameplay.PlayerTwo);
+        }
+
         private PlayerState GetStateOfPlayer(Player player)
         {
             var state = new PlayerState();
