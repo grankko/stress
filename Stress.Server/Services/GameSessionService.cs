@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Stress.Game;
 using Stress.Game.Cards;
+using Stress.Server.Models;
 using System;
 
-namespace Stress.Server.Models
+namespace Stress.Server.Services
 {
-    public class GameSession
+    public class GameSessionService
     {
-
         public string Key { get; private set; }
         public bool CanGameStart { get => _gameplay.CanStart(); }
 
@@ -16,7 +16,7 @@ namespace Stress.Server.Models
         private bool _playerOneWantsToDraw = false;
         private bool _playerTwoWantsToDraw = false;
 
-        public GameSession(string key)
+        public GameSessionService(string key)
         {
             Key = key;
             _gameplay = new Gameplay();
@@ -27,7 +27,7 @@ namespace Stress.Server.Models
             _gameplay.AddPlayer(nickName);
         }
 
-        public void ExecutePlayerAction(int playerNumber, int slotNumber, bool isLeftStack)
+        public void PlayerPlaysCardOnStack(int playerNumber, int slotNumber, bool isLeftStack)
         {
             var player = _gameplay.PlayerOne;
             if (playerNumber == 2)
@@ -44,7 +44,6 @@ namespace Stress.Server.Models
 
         public GameState GetStateOfPlay()
         {
-            // todo: introduce proper models
             var state = new GameState();
             state.PlayerOneState = GetStateOfPlayer(_gameplay.PlayerOne);
             state.PlayerTwoState = GetStateOfPlayer(_gameplay.PlayerTwo);
@@ -53,8 +52,10 @@ namespace Stress.Server.Models
             return state;
         }
 
-        public bool PlayerWantsToDraw(int playerNumber)
+        public GameState PlayerWantsToDraw(int playerNumber)
         {
+            var drawExecuted = false;
+
             if (playerNumber == 1)
                 _playerOneWantsToDraw = true;
             if (playerNumber == 2)
@@ -66,10 +67,15 @@ namespace Stress.Server.Models
                 _playerOneWantsToDraw = false;
                 _playerTwoWantsToDraw = false;
 
-                return true;
+                drawExecuted = true;
             }
 
-            return false;
+            var state = GetStateOfPlay();
+            state.DrawExecuted = drawExecuted;
+            if (!drawExecuted)
+                state.DrawRequestedByPlayer = playerNumber;
+
+            return state;
         }
 
         private PlayerState GetStateOfPlayer(Player player)

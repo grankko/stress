@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     var isLeftStack = event.target.dataset.leftstack;
                     event.dataTransfer.clearData();
 
-                    connection.invoke('executePlayerAction', currentSessionKey, playerNumber, parseInt(cardSlot), (isLeftStack === 'true'));
+                    connection.invoke('playerPlaysCardOnStack', currentSessionKey, playerNumber, parseInt(cardSlot), (isLeftStack === 'true'));
                 }
             }
 
@@ -60,8 +60,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 var nickName = $('create_nickName').value;
 
                 connection.invoke('createGameSession', nickName).then(function (sessionKey) {
-                    $('gameCode').innerText = sessionKey;
-                    $('joinGamePanel').style.visibility = 'hidden';
+                    $('gameCode').innerText = `Game key: ${sessionKey}`;
+                    $('joinGamePanel').style.display = 'none';
+                    $('loadingPanel').style.display = 'block';
                     $('createGameButton').disabled = true;
                     playerNumber = 1;
                     currentSessionKey = sessionKey;

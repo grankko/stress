@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Stress.Server.Models;
 using Stress.Server.Services;
 
 namespace Stress.Server.Controllers
@@ -26,7 +25,7 @@ namespace Stress.Server.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<GameSession> Get()
+        public IEnumerable<GameSessionService> Get()
         {
             return _sessionService.GameSessions.Values;
         }

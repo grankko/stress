@@ -27,29 +27,6 @@ namespace Stress.Server.Hubs
             return sessionKey;
         }
 
-        public async void ExecutePlayerAction(string sessionKey, int playerNumber, int slotNumber, bool isLeftStack)
-        {
-            var session = _sessionService.GameSessions[sessionKey];
-            session.ExecutePlayerAction(playerNumber, slotNumber, isLeftStack);
-            await Clients.Group(sessionKey).SendAsync("gameStateChanged", session.GetStateOfPlay());
-        }
-
-        public async void PlayerWantsToDraw(string sessionKey, int playerNumber)
-        {
-            var session = _sessionService.GameSessions[sessionKey];
-
-
-            // todo: ugly
-            var drawExecuted = session.PlayerWantsToDraw(playerNumber);
-
-            var state = session.GetStateOfPlay();
-            state.DrawExecuted = drawExecuted;
-            if (!state.DrawExecuted)
-                state.DrawRequestedByPlayer = playerNumber;
-
-            await Clients.Group(sessionKey).SendAsync("gameStateChanged", state);
-        }
-
         public async void JoinGameSession(string nickName, string sessionKey)
         {
             if (!_sessionService.GameSessions.ContainsKey(sessionKey))
@@ -62,6 +39,28 @@ namespace Stress.Server.Hubs
 
             if (session.CanGameStart)
                 await Clients.Group(sessionKey).SendAsync("gameStateChanged", session.GetStateOfPlay());
+        }
+
+        public async void PlayerPlaysCardOnStack(string sessionKey, int playerNumber, int slotNumber, bool isLeftStack)
+        {
+            var session = _sessionService.GameSessions[sessionKey];
+            session.PlayerPlaysCardOnStack(playerNumber, slotNumber, isLeftStack);
+            await Clients.Group(sessionKey).SendAsync("gameStateChanged", session.GetStateOfPlay());
+
+            // todo: check if someone won and push message to clients in group
+        }
+
+        public async void PlayerWantsToDraw(string sessionKey, int playerNumber)
+        {
+            var session = _sessionService.GameSessions[sessionKey];
+
+            var gameState = session.PlayerWantsToDraw(playerNumber);
+            await Clients.Group(sessionKey).SendAsync("gameStateChanged", gameState);
+        }
+
+        public async void PlayerCallsStress(string sessionKey, int playerNumber)
+        {
+            throw new NotImplementedException();
         }
     }
 }
