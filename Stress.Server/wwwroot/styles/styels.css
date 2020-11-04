@@ -4,6 +4,7 @@
 
 body {
     min-height: 100%;
+    font-family: sans-serif;
 }
 
 .startPanel {
@@ -25,8 +26,15 @@ body {
     grid-template-rows: 1fr 1fr 1fr;
     grid-gap: 5px 5px;
     grid-template-areas: ". . ." ". . ." ". . .";
+    justify-items: center;
+    align-items: center;
     width: 100vw;
     height: 100vh;
+}
+
+.opponentOptions {
+    grid-column: 1;
+    grid-row: 1;
 }
 
 .opponentPanel {
@@ -34,9 +42,20 @@ body {
     grid-row: 1;
 }
 
+.opponentInfo {
+    grid-column: 3;
+    grid-row: 1;
+}
+
 .tablePanel {
     grid-column: 2;
     grid-row: 2;
+}
+
+.playerInfo {
+    grid-column: 1;
+    grid-row: 3;
+    font-size: large;
 }
 
 .playerPanel {

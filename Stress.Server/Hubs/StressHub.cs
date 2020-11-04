@@ -34,6 +34,22 @@ namespace Stress.Server.Hubs
             await Clients.Group(sessionKey).SendAsync("gameStateChanged", session.GetStateOfPlay());
         }
 
+        public async void PlayerWantsToDraw(string sessionKey, int playerNumber)
+        {
+            var session = _sessionService.GameSessions[sessionKey];
+
+
+            // todo: ugly
+            var drawExecuted = session.PlayerWantsToDraw(playerNumber);
+
+            var state = session.GetStateOfPlay();
+            state.DrawExecuted = drawExecuted;
+            if (!state.DrawExecuted)
+                state.DrawRequestedByPlayer = playerNumber;
+
+            await Clients.Group(sessionKey).SendAsync("gameStateChanged", state);
+        }
+
         public async void JoinGameSession(string nickName, string sessionKey)
         {
             if (!_sessionService.GameSessions.ContainsKey(sessionKey))
@@ -43,6 +59,9 @@ namespace Stress.Server.Hubs
             await Groups.AddToGroupAsync(this.Context.ConnectionId, sessionKey);
             session.AddPlayer(nickName);
             await Clients.Group(sessionKey).SendAsync("infoMessage", $"{nickName} joined the game {sessionKey}.");
+
+            if (session.CanGameStart)
+                await Clients.Group(sessionKey).SendAsync("gameStateChanged", session.GetStateOfPlay());
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Stress.Server.Services
 
         public string CreateNewGameSession()
         {
-            var session = new GameSession(GenerateNewSessionKey(), _hubContext);
+            var session = new GameSession(GenerateNewSessionKey());
             GameSessions.Add(session.Key, session);
             return session.Key;
         }

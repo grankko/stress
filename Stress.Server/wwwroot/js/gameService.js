@@ -1,13 +1,13 @@
-﻿function $(x) { return document.getElementById(x); }
-function showGame() {
-    for (let el of document.querySelectorAll('.startPanel')) el.style.visibility = 'hidden';
-    for (let el of document.querySelectorAll('.gamePanel')) el.style.visibility = 'visible';
-}
-var playerNumber = 0;
-var currentSessionKey = '';
+﻿// Client state
+var playerNumber = 0;           // Client needs to keep track of player number and game session
+var currentSessionKey = '';     // Session key and signalR group key
+var gameStarted = false;
+var playerWantsToDraw = false;
+var openingDrawOccured = false;
 
 document.addEventListener('DOMContentLoaded', function () {
 
+    // Setup signalR Hub connection
     var connection = new signalR.HubConnectionBuilder().withUrl("/stressHub").build();
 
     connection.on('infoMessage', function (message) {
@@ -16,7 +16,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     connection.on('gameStateChanged', function (state) {
         console.log('gameStateChanged message received.');
-        showGame();
+        if (!gameStarted) {
+            showGame(state);
+            gameStarted = true;
+        }
+
         updateBoardFromServerState(state);
     });
 
@@ -25,23 +29,31 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(function () {
             console.log('connection started.');
 
+            // When a card is dropped on a stack, send action to server
             function drop(event) {
                 event.preventDefault();
-                var cardSlot = event.dataTransfer.getData("text");
-                var isLeftStack = event.target.dataset.leftstack;
-                event.dataTransfer.clearData();
 
-                connection.invoke('executePlayerAction', currentSessionKey, playerNumber, parseInt(cardSlot), (isLeftStack === 'true'));
+                // Don't allow drop if the game has not had it's first draw
+                if (openingDrawOccured) {
+                    var cardSlot = event.dataTransfer.getData("text");
+                    var isLeftStack = event.target.dataset.leftstack;
+                    event.dataTransfer.clearData();
+
+                    connection.invoke('executePlayerAction', currentSessionKey, playerNumber, parseInt(cardSlot), (isLeftStack === 'true'));
+                }
             }
 
             $('leftStack').addEventListener('drop', drop);
             $('rightStack').addEventListener('drop', drop);
 
-            // todo: implement drag and drop from open card to stacks and send event to Hub
+            $('playerHand').addEventListener('click', function (event) {
+                if (!playerWantsToDraw) {
+                    $('playerHand').style.opacity = '0.5';
+                    connection.invoke('playerWantsToDraw', currentSessionKey, playerNumber);
+                }
+            });
 
             // todo: implement stress button and send event to Hub
-
-            // todo: implement "signal I want to draw" button
 
             $('createGameButton').addEventListener('click', function (event) {
 
@@ -78,6 +90,78 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 });
 
+function updateBoardFromServerState(state) {
+
+    // Draw executed on server, clear draw state
+    if (state.drawExecuted) {
+        $('playerHand').style.opacity = '1';
+        $('opponentHand').style.opacity = '1';
+        openingDrawOccured = true;
+    }
+
+    if (state.drawRequestedByPlayer > 0 && state.drawRequestedByPlayer !== playerNumber) // Opponent requested draw
+        $('opponentHand').style.opacity = '0.5';
+
+
+    // Server model does not know if the receiving client is player one or player two.
+    // Turn the table accordingly.
+    var playerOneElementIdTemplate = 'playerSlot';
+    var playerTwoElementIdTemplate = 'opponentSlot';
+    if (playerNumber === 2) {
+        playerOneElementIdTemplate = 'opponentSlot';
+        playerTwoElementIdTemplate = 'playerSlot';
+    }
+
+    updateCardSlotFromState(`${playerOneElementIdTemplate}1`, state.playerOneState.cardSlot1);
+    updateCardSlotFromState(`${playerOneElementIdTemplate}2`, state.playerOneState.cardSlot2);
+    updateCardSlotFromState(`${playerOneElementIdTemplate}3`, state.playerOneState.cardSlot3);
+    updateCardSlotFromState(`${playerOneElementIdTemplate}4`, state.playerOneState.cardSlot4);
+
+    updateCardSlotFromState(`${playerTwoElementIdTemplate}1`, state.playerTwoState.cardSlot1);
+    updateCardSlotFromState(`${playerTwoElementIdTemplate}2`, state.playerTwoState.cardSlot2);
+    updateCardSlotFromState(`${playerTwoElementIdTemplate}3`, state.playerTwoState.cardSlot3);
+    updateCardSlotFromState(`${playerTwoElementIdTemplate}4`, state.playerTwoState.cardSlot4);
+
+    updateCardSlotFromState('leftStack', state.leftStackTopCard);
+    updateCardSlotFromState('rightStack', state.rightStackTopCard);
+
+    if (playerNumber === 1) {
+        $('playerHandCardsLeft').innerText = state.playerOneState.cardsLeft;
+        $('opponentHandCardsLeft').innerText = state.playerTwoState.cardsLeft;
+    } else {
+        $('opponentHandCardsLeft').innerText = state.playerOneState.cardsLeft;
+        $('playerHandCardsLeft').innerText = state.playerTwoState.cardsLeft;
+    }
+}
+
+// Set color and card character of card slot
+function updateCardSlotFromState(elementId, card) {
+    $(elementId).innerText = cardShortHandJsRepresentation.get(card).char;
+    $(elementId).style.color = cardShortHandJsRepresentation.get(card).color;
+    $(elementId).dataset.cardShortHand = card;
+}
+
+// Hide join/create panel and show game panel
+function showGame(state) {
+    for (let el of document.querySelectorAll('.startPanel')) el.style.visibility = 'hidden';
+    for (let el of document.querySelectorAll('.gamePanel')) el.style.visibility = 'visible';
+
+    $('opponentHand').innerText = cardShortHandJsRepresentation.get(null).char; // Closed card character
+    $('playerHand').innerText = cardShortHandJsRepresentation.get(null).char;
+
+    if (playerNumber === 1) {
+        $('playerInfoLabel').innerText = state.playerOneState.nickName;
+        $('opponentInfoLabel').innerText = state.playerTwoState.nickName;
+    } else {
+        $('playerInfoLabel').innerText = state.playerTwoState.nickName;
+        $('opponentInfoLabel').innerText = state.playerOneState.nickName;
+    }
+
+}
+
+// Utils
+function $(x) { return document.getElementById(x); }
+
 function allowDrop(ev) {
     ev.preventDefault();
 }
@@ -86,53 +170,7 @@ function drag(ev) {
     ev.dataTransfer.setData("text", ev.target.dataset.slot);
 }
 
-function updateBoardFromServerState(state) {
-    var playerOneElementIdTemplate = 'playerSlot';
-    var playerTwoElementIdTemplate = 'opponentSlot';
-    if (playerNumber === 2) {
-        playerOneElementIdTemplate = 'opponentSlot';
-        playerTwoElementIdTemplate = 'playerSlot';
-    }
-
-    $(`${playerOneElementIdTemplate}1`).innerText = cardShortHandJsRepresentation.get(state.playerOneState.cardSlot1).char;
-    $(`${playerOneElementIdTemplate}1`).style.color = cardShortHandJsRepresentation.get(state.playerOneState.cardSlot1).color;
-    $(`${playerOneElementIdTemplate}1`).dataset.cardShortHand = state.playerOneState.cardSlot1;
-
-    $(`${playerOneElementIdTemplate}2`).innerText = cardShortHandJsRepresentation.get(state.playerOneState.cardSlot2).char;
-    $(`${playerOneElementIdTemplate}2`).style.color = cardShortHandJsRepresentation.get(state.playerOneState.cardSlot2).color;
-    $(`${playerOneElementIdTemplate}2`).dataset.cardShortHand = state.playerOneState.cardSlot2;
-
-    $(`${playerOneElementIdTemplate}3`).innerText = cardShortHandJsRepresentation.get(state.playerOneState.cardSlot3).char;
-    $(`${playerOneElementIdTemplate}3`).style.color = cardShortHandJsRepresentation.get(state.playerOneState.cardSlot3).color;
-    $(`${playerOneElementIdTemplate}3`).dataset.cardShortHand = state.playerOneState.cardSlot3;
-
-    $(`${playerOneElementIdTemplate}4`).innerText = cardShortHandJsRepresentation.get(state.playerOneState.cardSlot4).char;
-    $(`${playerOneElementIdTemplate}4`).style.color = cardShortHandJsRepresentation.get(state.playerOneState.cardSlot4).color;
-    $(`${playerOneElementIdTemplate}4`).dataset.cardShortHand = state.playerOneState.cardSlot4;
-
-    $(`${playerTwoElementIdTemplate}1`).innerText = cardShortHandJsRepresentation.get(state.playerTwoState.cardSlot1).char;
-    $(`${playerTwoElementIdTemplate}1`).style.color = cardShortHandJsRepresentation.get(state.playerTwoState.cardSlot1).color;
-    $(`${playerTwoElementIdTemplate}1`).dataset.cardShortHand = state.playerTwoState.cardSlot1;
-
-    $(`${playerTwoElementIdTemplate}2`).innerText = cardShortHandJsRepresentation.get(state.playerTwoState.cardSlot2).char;
-    $(`${playerTwoElementIdTemplate}2`).style.color = cardShortHandJsRepresentation.get(state.playerTwoState.cardSlot2).color;
-    $(`${playerTwoElementIdTemplate}2`).dataset.cardShortHand = state.playerTwoState.cardSlot2;
-
-    $(`${playerTwoElementIdTemplate}3`).innerText = cardShortHandJsRepresentation.get(state.playerTwoState.cardSlot3).char;
-    $(`${playerTwoElementIdTemplate}3`).style.color = cardShortHandJsRepresentation.get(state.playerTwoState.cardSlot3).color;
-    $(`${playerTwoElementIdTemplate}3`).dataset.cardShortHand = state.playerTwoState.cardSlot3;
-
-    $(`${playerTwoElementIdTemplate}4`).innerText = cardShortHandJsRepresentation.get(state.playerTwoState.cardSlot4).char;
-    $(`${playerTwoElementIdTemplate}4`).style.color = cardShortHandJsRepresentation.get(state.playerTwoState.cardSlot4).color;
-    $(`${playerTwoElementIdTemplate}4`).dataset.cardShortHand = state.playerTwoState.cardSlot4;
-
-    $('leftStack').innerText = cardShortHandJsRepresentation.get(state.leftStackTopCard).char;
-    $('leftStack').style.color = cardShortHandJsRepresentation.get(state.leftStackTopCard).color;
-
-    $('rightStack').innerText = cardShortHandJsRepresentation.get(state.rightStackTopCard).char;
-    $('rightStack').style.color = cardShortHandJsRepresentation.get(state.rightStackTopCard).color;
-}
-
+// translate short representation of card to card character
 const cardShortHandJsRepresentation = new Map();
 cardShortHandJsRepresentation.set("S14", { char: "\uD83C\uDCA1", color: "#000000" });
 cardShortHandJsRepresentation.set("S2",  { char: "\uD83C\uDCA2", color: "#000000" });

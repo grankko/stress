@@ -7,6 +7,8 @@
         public PlayerState PlayerTwoState { get; set; }
         public string LeftStackTopCard { get; set; }
         public string RightStackTopCard { get; set; }
+        public bool DrawExecuted { get; set; }
+        public int DrawRequestedByPlayer { get; set; }
     }
 
     public class PlayerState

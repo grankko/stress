@@ -1,30 +1,30 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Stress.Game;
 using Stress.Game.Cards;
-using Stress.Server.Hubs;
 using System;
 
 namespace Stress.Server.Models
 {
     public class GameSession
     {
-        private IHubContext<StressHub> _hubContext;  // consider: should the GameSession really speak directly with the hub?
 
         public string Key { get; private set; }
+        public bool CanGameStart { get => _gameplay.CanStart(); }
+
         private Gameplay _gameplay;
 
-        public GameSession(string key, IHubContext<StressHub> hubContext)
+        private bool _playerOneWantsToDraw = false;
+        private bool _playerTwoWantsToDraw = false;
+
+        public GameSession(string key)
         {
             Key = key;
             _gameplay = new Gameplay();
-            _hubContext = hubContext;
         }
 
-        public async void AddPlayer(string nickName)
+        public void AddPlayer(string nickName)
         {
             _gameplay.AddPlayer(nickName);
-            if (_gameplay.CanStart())
-                await _hubContext.Clients.Group(Key).SendAsync("gameStateChanged", GetStateOfPlay());
         }
 
         public void ExecutePlayerAction(int playerNumber, int slotNumber, bool isLeftStack)
@@ -51,6 +51,25 @@ namespace Stress.Server.Models
             state.LeftStackTopCard = _gameplay.LeftStack.TopCard?.ShortName;
             state.RightStackTopCard = _gameplay.RightStack.TopCard?.ShortName;
             return state;
+        }
+
+        public bool PlayerWantsToDraw(int playerNumber)
+        {
+            if (playerNumber == 1)
+                _playerOneWantsToDraw = true;
+            if (playerNumber == 2)
+                _playerTwoWantsToDraw = true;
+
+            if (_playerOneWantsToDraw && _playerTwoWantsToDraw)
+            {
+                _gameplay.Draw();
+                _playerOneWantsToDraw = false;
+                _playerTwoWantsToDraw = false;
+
+                return true;
+            }
+
+            return false;
         }
 
         private PlayerState GetStateOfPlayer(Player player)
