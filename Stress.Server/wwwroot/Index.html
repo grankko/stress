@@ -43,6 +43,10 @@
         <div class="tablePanel">
             <span class="playingCard" id="leftStack" data-leftstack="true" ondragover="allowDrop(event)">&#127137;</span>
             <span class="playingCard" id="rightStack" data-leftstack="false" ondragover="allowDrop(event)">&#127137;</span>
+            <div class="endPanel" id="playerWonPanel">
+                <span id="playerWonLabel"></span>
+                <button id="restartGameButton">Play again</button>
+            </div>
         </div>
         <div class="stressPanel">
             <button class="stressButton" id="callStressEventButton">Call Stress!</button>
@@ -62,7 +66,7 @@
         </div>
     </div>
 
-    <script src="js/signalr/dist/browser/signalr.min.js"></script>
+    <script src="js/signalr/dist/browser/signalr.js"></script>
     <script src="js/gameService.js"></script>
 </body>
 </html>

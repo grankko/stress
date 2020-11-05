@@ -8,6 +8,9 @@
         public string RightStackTopCard { get; set; }
         public bool DrawExecuted { get; set; }
         public int DrawRequestedByPlayer { get; set; }
+        public string WinnerName { get; set; }
+        public int NewGameRequestedByPlayer { get; set; }
+        public bool RematchStarted { get; set; }
     }
 
     public class PlayerState

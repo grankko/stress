@@ -32,6 +32,28 @@ namespace Stress.Game
         }
 
         /// <summary>
+        /// Restarts the game with the same players
+        /// </summary>
+        public void RestartGame()
+        {
+            Deck = StackOfCards.CreateFullDeckOfCards();
+            Deck.Shuffle();
+
+            LeftStack = new OpenStackOfCards();
+            RightStack = new OpenStackOfCards();
+
+            // todo: ugly
+            var playerOneName = PlayerOne.NickName;
+            var playerTwoName = PlayerTwo.NickName;
+
+            PlayerOne = null;
+            PlayerTwo = null;
+
+            AddPlayer(playerOneName);
+            AddPlayer(playerTwoName);
+        }
+
+        /// <summary>
         /// If the players are ready, deal the full deck of cards to the players.
         /// </summary>
         public void Deal()

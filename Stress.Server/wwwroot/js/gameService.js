@@ -21,7 +21,13 @@ document.addEventListener('DOMContentLoaded', function () {
             gameStarted = true;
         }
 
+        if (state.rematchStarted)
+            rematch();
+
         updateBoardFromServerState(state);
+        
+        if (state.winnerName != null && state.winnerName.length > 0) 
+            showWinner(state.winnerName);
     });
 
     // todo: we need to recover connection if lost
@@ -34,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 event.preventDefault();
 
                 // Don't allow drop if the game has not had it's first draw
-                if (openingDrawOccured) {
+                if (openingDrawOccured && gameStarted) {
                     var cardSlot = event.dataTransfer.getData("text");
                     var isLeftStack = event.target.dataset.leftstack;
                     event.dataTransfer.clearData();
@@ -49,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Initiate draw action when clicking own stack, indicate that draw is requested by opacity
             $('playerHand').addEventListener('click', function (event) {
-                if (!playerWantsToDraw) {
+                if (!playerWantsToDraw && gameStarted) {
                     $('playerHand').style.opacity = '0.5';
                     connection.invoke('playerWantsToDraw', currentSessionKey, playerNumber);
                 }
@@ -60,22 +66,27 @@ document.addEventListener('DOMContentLoaded', function () {
                     connection.invoke('playerCallsStress', currentSessionKey, playerNumber);
             });
 
-            // todo: implement stress button and send event to Hub
+            $('restartGameButton').addEventListener('click', function (event) {
+                $('restartGameButton').textContent = 'Waiting..'
+                connection.invoke('requestNewGame', currentSessionKey, playerNumber);
+            });
 
             $('createGameButton').addEventListener('click', function (event) {
 
                 var nickName = $('create_nickName').value;
 
-                connection.invoke('createGameSession', nickName).then(function (sessionKey) {
-                    $('gameCode').innerText = `Game key: ${sessionKey}`;
-                    $('joinGamePanel').style.display = 'none';
-                    $('loadingPanel').style.display = 'block';
-                    $('createGameButton').disabled = true;
+                if (validateNickName(nickName)) {
+                    connection.invoke('createGameSession', nickName).then(function (sessionKey) {
+                        $('gameCode').innerText = `Game key: ${sessionKey}`;
+                        $('joinGamePanel').style.display = 'none';
+                        $('loadingPanel').style.display = 'block';
+                        $('createGameButton').disabled = true;
 
-                    // Player who creates the game is Player One
-                    playerNumber = 1;
-                    currentSessionKey = sessionKey;
-                });
+                        // Player who creates the game is Player One
+                        playerNumber = 1;
+                        currentSessionKey = sessionKey;
+                    });
+                }
 
                 event.preventDefault();
             });
@@ -85,13 +96,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 var nickName = $('join_nickName').value;
                 var sessionKey = $('join_sessionKey').value;
 
-                // Player who joins the game is Player Two
-                playerNumber = 2;
+                if (validateNickName(nickName)) {
+                    // Player who joins the game is Player Two
+                    playerNumber = 2;
 
-                connection.invoke('joinGameSession', nickName, sessionKey).then(function () {
-                    currentSessionKey = sessionKey;
-                    showGame();
-                });
+                    connection.invoke('joinGameSession', nickName, sessionKey).then(function () {
+                        currentSessionKey = sessionKey;
+                        showGame();
+                    });
+                }
 
                 event.preventDefault();
             });
@@ -146,6 +159,26 @@ function updateBoardFromServerState(state) {
     }
 }
 
+function showWinner(winnerName) {
+    gameStarted = false;
+    openingDrawOccured = false;
+    playerWantsToDraw = false;
+    
+    $('leftStack').innerText = '';
+    $('rightStack').innerText = '';
+
+    $('playerWonPanel').style.display = 'block';
+    $('playerWonLabel').innerText = `${winnerName} won!`;
+}
+
+function rematch() {
+    gameStarted = true;
+    openingDrawOccured = false;
+    playerWantsToDraw = false;
+    $('playerWonPanel').style.display = 'none';
+    $('playerWonLabel').innerText = '';
+}
+
 // Set color and card character of card slot
 function updateCardSlotFromState(elementId, card) {
     if (card == null) {
@@ -165,18 +198,26 @@ function showGame(state) {
     $('opponentHand').innerText = cardShortHandJsRepresentation.get(null).char; // Closed card character
     $('playerHand').innerText = cardShortHandJsRepresentation.get(null).char;
 
-    if (playerNumber === 1) {
-        $('playerInfoLabel').innerText = state.playerOneState.nickName;
-        $('opponentInfoLabel').innerText = state.playerTwoState.nickName;
-    } else {
-        $('playerInfoLabel').innerText = state.playerTwoState.nickName;
-        $('opponentInfoLabel').innerText = state.playerOneState.nickName;
+    // If showGame is triggered by update from server
+    if (state != null) {
+        if (playerNumber === 1) {
+            $('playerInfoLabel').innerText = state.playerOneState.nickName;
+            $('opponentInfoLabel').innerText = state.playerTwoState.nickName;
+        } else {
+            $('playerInfoLabel').innerText = state.playerTwoState.nickName;
+            $('opponentInfoLabel').innerText = state.playerOneState.nickName;
+        }
     }
-
 }
 
 // Utils
 function $(x) { return document.getElementById(x); }
+
+function validateNickName(input) {
+    if (input != null && input.length > 2)
+        return true;
+    return false;
+}
 
 function allowDrop(ev) {
     ev.preventDefault();

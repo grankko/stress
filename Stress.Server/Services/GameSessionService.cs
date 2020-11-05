@@ -16,6 +16,9 @@ namespace Stress.Server.Services
         private bool _playerOneWantsToDraw = false;
         private bool _playerTwoWantsToDraw = false;
 
+        private bool _playerOneWantsNewGame = false;
+        private bool _playerTwoWantsNewGame = false;
+
         public GameSessionService(string key)
         {
             Key = key;
@@ -49,6 +52,12 @@ namespace Stress.Server.Services
             state.PlayerTwoState = GetStateOfPlayer(_gameplay.PlayerTwo);
             state.LeftStackTopCard = _gameplay.LeftStack.TopCard?.ShortName;
             state.RightStackTopCard = _gameplay.RightStack.TopCard?.ShortName;
+
+            if (_gameplay.PlayerOne.HasWon)
+                state.WinnerName = _gameplay.PlayerOne.NickName;
+            else if (_gameplay.PlayerTwo.HasWon)
+                state.WinnerName = _gameplay.PlayerTwo.NickName;
+
             return state;
         }
 
@@ -84,6 +93,30 @@ namespace Stress.Server.Services
                 _gameplay.PlayerCallsStressEvent(_gameplay.PlayerOne); // todo: ugly
             else if (playerNumber == 2)
                 _gameplay.PlayerCallsStressEvent(_gameplay.PlayerTwo);
+        }
+
+        public GameState RequestNewGame(int playerNumber)
+        {
+            var newGameStarted = false;
+
+            if (playerNumber == 1)
+                _playerOneWantsNewGame = true;
+            if (playerNumber == 2)
+                _playerTwoWantsNewGame = true;
+
+            if (_playerOneWantsNewGame && _playerTwoWantsNewGame)
+            {
+                _gameplay.RestartGame();
+                newGameStarted = true;
+            }
+
+            var state = GetStateOfPlay();
+            
+            state.RematchStarted = newGameStarted;
+            if (!newGameStarted)
+                state.NewGameRequestedByPlayer = playerNumber;
+
+            return state;
         }
 
         private PlayerState GetStateOfPlayer(Player player)

@@ -46,8 +46,6 @@ namespace Stress.Server.Hubs
             var session = _sessionService.GameSessions[sessionKey];
             session.PlayerPlaysCardOnStack(playerNumber, slotNumber, isLeftStack);
             await Clients.Group(sessionKey).SendAsync("gameStateChanged", session.GetStateOfPlay());
-
-            // todo: check if someone won and push message to clients in group
         }
 
         public async void PlayerWantsToDraw(string sessionKey, int playerNumber)
@@ -64,6 +62,13 @@ namespace Stress.Server.Hubs
             session.PlayerCallsStress(playerNumber);
 
             await Clients.Group(sessionKey).SendAsync("gameStateChanged", session.GetStateOfPlay());
+        }
+
+        public async void RequestNewGame(string sessionKey, int playerNumber)
+        {
+            var session = _sessionService.GameSessions[sessionKey];
+            var gameState = session.RequestNewGame(playerNumber);
+            await Clients.Group(sessionKey).SendAsync("gameStateChanged", gameState);
         }
     }
 }
