@@ -10,4 +10,6 @@ Includes
 
 Live at: https://granakerprod-stress.azurewebsites.net/
 
+![how to start game](https://github.com/grankko/stress/raw/main/Stress.Server/wwwroot/images/howto.png)
+
 ..work in progress..
