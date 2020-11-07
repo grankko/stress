@@ -1,3 +1,5 @@
-﻿function $(x) { return document.getElementById(x); }
+﻿'use strict';
+
+function $(x) { return document.getElementById(x); }
 
 export { $ };

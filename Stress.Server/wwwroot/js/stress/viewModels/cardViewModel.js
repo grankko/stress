@@ -1,30 +1,72 @@
-﻿import { $ } from '../utils/viewUtils.js';
+﻿'use strict';
+
+import { $ } from '../utils/viewUtils.js';
 
 class cardViewModel {
-    constructor(elementId, model, isPlayerCard) {
+    constructor(connection, elementId) {
         this.element = $(elementId);
-        if (isPlayerCard)
-            this.element.addEventListener('dragstart', drag);
+        this.connection = connection;
+        this.cardType = this.element.dataset.cardtype;
+        this.drawSignaled = false;
 
-        this.setCardFromShortHand(model);
+        this.assignEventHandlers();
     }
 
-    setCardFromShortHand(shortHand) {
-        if (shortHand == null) {
+    setModel(model) {
+        if (model == null) {
             this.element.innerText = '';
         } else {
-            this.element.innerText = cardShortHandJsRepresentation.get(shortHand).char;
-            this.element.style.color = cardShortHandJsRepresentation.get(shortHand).char;
-            this.element.dataset.cardShortHand = shortHand;
+            this.element.innerText = cardShortHandJsRepresentation.get(model).char;
+            this.element.style.color = cardShortHandJsRepresentation.get(model).char;
+            this.element.dataset.cardShortHand = model;
+        }
+    }
+
+    toggleDrawRequestedStyle(isRequested) {
+        if (isRequested)
+            this.element.style.opacity = '0.5';
+        else
+            this.element.style.opacity = '1';
+    }
+
+    assignEventHandlers() {
+
+        var me = this;
+
+        if (this.cardType === 'player') {
+            // Player open cards are draggable
+            this.element.addEventListener('dragstart', function (event) {
+                event.dataTransfer.setData("text", event.target.dataset.slot);
+            });
+        } else if (this.cardType === 'leftStack' || this.cardType === 'rightStack') {
+            // Stack cards are droppable. Dropping a card signals that the player wants to make a move
+            this.element.addEventListener('drop', function (event) {
+                event.preventDefault();
+
+                var cardSlot = event.dataTransfer.getData("text");
+                event.dataTransfer.clearData();
+
+                if (me.cardType === 'leftStack')
+                    me.connection.invoke('playerPlaysCardOnStack', me.connection.sessionKey, me.connection.playerNumber, parseInt(cardSlot), true);
+                else
+                    me.connection.invoke('playerPlaysCardOnStack', me.connection.sessionKey, me.connection.playerNumber, parseInt(cardSlot), false);
+            });
+            this.element.addEventListener('dragover', function (event) {
+                event.preventDefault();
+            });
+        } else if (this.cardType === 'playerHand') {
+            // Player hand click should signal that the player wants to draw
+            this.element.addEventListener('click', function (event) {
+                if (!me.drawSignaled) {
+                    me.toggleDrawRequestedStyle(true);
+                    me.connection.invoke('playerWantsToDraw', me.connection.sessionKey, me.connection.playerNumber);
+                }
+            });
         }
     }
 }
 
 export { cardViewModel };
-
-function drag(event) {
-    event.dataTransfer.setData("text", event.target.dataset.slot);
-}
 
 // Translates short string representation of card to card character
 const cardShortHandJsRepresentation = new Map();

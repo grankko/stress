@@ -28,24 +28,24 @@
 
     <div class="gamePanel">
         <div class="opponentOptions">
-            <span class="playingCard" id="opponentHand"></span>
+            <span class="playingCard" id="opponentHand" data-cardtype="opponentHand"></span>
             <span id="opponentHandCardsLeft"></span>
         </div>
         <div class="opponentPanel">
-            <span class="playingCard" id="opponentSlot1">&#127137;</span>
-            <span class="playingCard" id="opponentSlot2">&#127137;</span>
-            <span class="playingCard" id="opponentSlot3">&#127137;</span>
-            <span class="playingCard" id="opponentSlot4">&#127137;</span>
+            <span class="playingCard" id="opponentSlot1" data-cardtype="opponent">&#127137;</span>
+            <span class="playingCard" id="opponentSlot2" data-cardtype="opponent">&#127137;</span>
+            <span class="playingCard" id="opponentSlot3" data-cardtype="opponent">&#127137;</span>
+            <span class="playingCard" id="opponentSlot4" data-cardtype="opponent">&#127137;</span>
         </div>
         <div class="opponentInfo">
             <span class="infoLabel" id="opponentInfoLabel"></span>
         </div>
         <div class="tablePanel">
-            <span class="playingCard" id="leftStack" data-leftstack="true">&#127137;</span>
-            <span class="playingCard" id="rightStack" data-leftstack="false">&#127137;</span>
+            <span class="playingCard" id="leftStack" data-cardtype="leftStack">&#127137;</span>
+            <span class="playingCard" id="rightStack" data-cardtype="rightStack">&#127137;</span>
             <div class="endPanel" id="playerWonPanel">
                 <span id="playerWonLabel"></span>
-                <button id="restartGameButton">Play again</button>
+                <button id="restartGameButton">Play again?</button>
             </div>
         </div>
         <div class="stressPanel">
@@ -55,13 +55,13 @@
             <span class="infoLabel" id="playerInfoLabel"></span>
         </div>
         <div class="playerPanel">
-            <span class="playingCard" id="playerSlot1" data-slot="1" draggable="true">&#127137;</span>
-            <span class="playingCard" id="playerSlot2" data-slot="2" draggable="true">&#127137;</span>
-            <span class="playingCard" id="playerSlot3" data-slot="3" draggable="true">&#127137;</span>
-            <span class="playingCard" id="playerSlot4" data-slot="4" draggable="true">&#127137;</span>
+            <span class="playingCard" id="playerSlot1" data-cardtype="player" data-slot="1" draggable="true">&#127137;</span>
+            <span class="playingCard" id="playerSlot2" data-cardtype="player" data-slot="2" draggable="true">&#127137;</span>
+            <span class="playingCard" id="playerSlot3" data-cardtype="player" data-slot="3" draggable="true">&#127137;</span>
+            <span class="playingCard" id="playerSlot4" data-cardtype="player" data-slot="4" draggable="true">&#127137;</span>
         </div>
         <div class="playerOptions">
-            <span class="playingCard" id="playerHand"></span>
+            <span class="playingCard" id="playerHand" data-cardtype="playerHand"></span>
             <span id="playerHandCardsLeft"></span>
         </div>
     </div>

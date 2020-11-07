@@ -16,8 +16,8 @@ class startGameViewModel {
 
         if (me.validateNickName(nickName)) {
             this.connection.invoke('createGameSession', nickName).then(function (result) {
-                me.mainViewModel.sessionKey = result;
-                me.mainViewModel.playerNumber = 1; // Creating player is player one
+                me.connection.sessionKey = result;
+                me.connection.playerNumber = 1; // Creating player is player one
 
                 $('gameCode').innerText = `Game key: ${result}`;
                 $('joinGamePanel').style.display = 'none';
@@ -34,8 +34,8 @@ class startGameViewModel {
 
         if (me.validateNickName(nickName)) {
             this.connection.invoke('joinGameSession', nickName, sessionKeyInput);
-            me.mainViewModel.sessionKey = sessionKeyInput;
-            me.mainViewModel.playerNumber = 2; // Joining player is player two
+            me.connection.sessionKey = sessionKeyInput;
+            me.connection.playerNumber = 2; // Joining player is player two
         }
     }
 

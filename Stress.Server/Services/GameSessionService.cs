@@ -108,6 +108,8 @@ namespace Stress.Server.Services
             {
                 _gameplay.RestartGame();
                 newGameStarted = true;
+                _playerOneWantsNewGame = false;
+                _playerTwoWantsNewGame = false;
             }
 
             var state = GetStateOfPlay();
