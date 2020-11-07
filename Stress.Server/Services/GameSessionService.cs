@@ -48,8 +48,8 @@ namespace Stress.Server.Services
         public GameState GetStateOfPlay()
         {
             var state = new GameState();
-            state.PlayerOneState = GetStateOfPlayer(_gameplay.PlayerOne);
-            state.PlayerTwoState = GetStateOfPlayer(_gameplay.PlayerTwo);
+            state.PlayerOneState = GetStateOfPlayer(_gameplay.PlayerOne, 1);
+            state.PlayerTwoState = GetStateOfPlayer(_gameplay.PlayerTwo, 2);
             state.LeftStackTopCard = _gameplay.LeftStack.TopCard?.ShortName;
             state.RightStackTopCard = _gameplay.RightStack.TopCard?.ShortName;
 
@@ -119,7 +119,7 @@ namespace Stress.Server.Services
             return state;
         }
 
-        private PlayerState GetStateOfPlayer(Player player)
+        private PlayerState GetStateOfPlayer(Player player, int playerNumber)
         {
             var state = new PlayerState();
             state.NickName = player.NickName;
@@ -128,6 +128,7 @@ namespace Stress.Server.Services
             state.CardSlot2 = player.OpenCards[1]?.ShortName;
             state.CardSlot3 = player.OpenCards[2]?.ShortName;
             state.CardSlot4 = player.OpenCards[3]?.ShortName;
+            state.PlayerNumber = playerNumber;
             return state;
         }
     }

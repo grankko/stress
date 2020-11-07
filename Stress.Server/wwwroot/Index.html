@@ -41,8 +41,8 @@
             <span class="infoLabel" id="opponentInfoLabel"></span>
         </div>
         <div class="tablePanel">
-            <span class="playingCard" id="leftStack" data-leftstack="true" ondragover="allowDrop(event)">&#127137;</span>
-            <span class="playingCard" id="rightStack" data-leftstack="false" ondragover="allowDrop(event)">&#127137;</span>
+            <span class="playingCard" id="leftStack" data-leftstack="true">&#127137;</span>
+            <span class="playingCard" id="rightStack" data-leftstack="false">&#127137;</span>
             <div class="endPanel" id="playerWonPanel">
                 <span id="playerWonLabel"></span>
                 <button id="restartGameButton">Play again</button>
@@ -55,10 +55,10 @@
             <span class="infoLabel" id="playerInfoLabel"></span>
         </div>
         <div class="playerPanel">
-            <span class="playingCard" id="playerSlot1" data-slot="1" draggable="true" ondragstart="drag(event)">&#127137;</span>
-            <span class="playingCard" id="playerSlot2" data-slot="2" draggable="true" ondragstart="drag(event)">&#127137;</span>
-            <span class="playingCard" id="playerSlot3" data-slot="3" draggable="true" ondragstart="drag(event)">&#127137;</span>
-            <span class="playingCard" id="playerSlot4" data-slot="4" draggable="true" ondragstart="drag(event)">&#127137;</span>
+            <span class="playingCard" id="playerSlot1" data-slot="1" draggable="true">&#127137;</span>
+            <span class="playingCard" id="playerSlot2" data-slot="2" draggable="true">&#127137;</span>
+            <span class="playingCard" id="playerSlot3" data-slot="3" draggable="true">&#127137;</span>
+            <span class="playingCard" id="playerSlot4" data-slot="4" draggable="true">&#127137;</span>
         </div>
         <div class="playerOptions">
             <span class="playingCard" id="playerHand"></span>
@@ -67,6 +67,6 @@
     </div>
 
     <script src="js/signalr/dist/browser/signalr.js"></script>
-    <script src="js/gameService.js"></script>
+    <script src="js/stress/app.js" type="module"></script>
 </body>
 </html>
