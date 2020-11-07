@@ -23,7 +23,6 @@ namespace Stress.Server.Hubs
             _sessionService.GameSessions[sessionKey].AddPlayer(nickName);
             
             await Groups.AddToGroupAsync(this.Context.ConnectionId, sessionKey);
-            await Clients.Group(sessionKey).SendAsync("infoMessage", $"{nickName} joined the game {sessionKey}.");
             return sessionKey;
         }
 
@@ -35,7 +34,6 @@ namespace Stress.Server.Hubs
             var session = _sessionService.GameSessions[sessionKey];
             await Groups.AddToGroupAsync(this.Context.ConnectionId, sessionKey);
             session.AddPlayer(nickName);
-            await Clients.Group(sessionKey).SendAsync("infoMessage", $"{nickName} joined the game {sessionKey}.");
 
             if (session.CanGameStart)
                 await Clients.Group(sessionKey).SendAsync("gameStateChanged", session.GetStateOfPlay());

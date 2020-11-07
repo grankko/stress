@@ -2,6 +2,7 @@
 
 import { $ } from '../utils/viewUtils.js';
 
+// Logic behind the start/join game view
 class startGameViewModel {
     constructor(connection, mainViewModel) {
         this.connection = connection;
@@ -56,6 +57,7 @@ class startGameViewModel {
         });
     }
 
+    // todo: really?
     validateNickName(input) {
         if (input != null && input.length > 2)
             return true;

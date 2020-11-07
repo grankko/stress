@@ -1,12 +1,14 @@
 ﻿'use strict';
 
 import { $ } from '../utils/viewUtils.js';
-import { cardViewModel } from './cardViewModel.js';
+import { playerHandCardViewModel } from './cardViewModels/playerHandCardViewModel.js';
+import { playerOpenCardViewModel } from './cardViewModels/playerOpenCardViewModel.js';
 
+// Represents one of the players
 class playerViewModel {
     constructor(connection, isPlayer) {
-        this.isPlayer = isPlayer;
-        this.elementTemplate = '';
+        this.isPlayer = isPlayer;           // Indicates if the model represents the player or the opponent
+        this.elementTemplate = '';          // Prefix with elementTemplate and concatenate to get elements in a player agonstic way
         this.connection = connection;
 
         if (isPlayer)
@@ -14,12 +16,12 @@ class playerViewModel {
         else
             this.elementTemplate = 'opponent';
         
-        this.cardSlot1 = new cardViewModel(connection, `${this.elementTemplate}Slot1`, isPlayer);
-        this.cardSlot2 = new cardViewModel(connection, `${this.elementTemplate}Slot2`, isPlayer);
-        this.cardSlot3 = new cardViewModel(connection, `${this.elementTemplate}Slot3`, isPlayer);
-        this.cardSlot4 = new cardViewModel(connection, `${this.elementTemplate}Slot4`, isPlayer);
+        this.cardSlot1 = new playerOpenCardViewModel(connection, `${this.elementTemplate}Slot1`);
+        this.cardSlot2 = new playerOpenCardViewModel(connection, `${this.elementTemplate}Slot2`);
+        this.cardSlot3 = new playerOpenCardViewModel(connection, `${this.elementTemplate}Slot3`);
+        this.cardSlot4 = new playerOpenCardViewModel(connection, `${this.elementTemplate}Slot4`);
 
-        this.hand = new cardViewModel(connection, `${this.elementTemplate}Hand`, isPlayer);
+        this.hand = new playerHandCardViewModel(connection, `${this.elementTemplate}Hand`, isPlayer);
         this.hand.setModel('closed');
     }
 
@@ -33,6 +35,7 @@ class playerViewModel {
         $(`${this.elementTemplate}InfoLabel`).innerText = model.nickName;
     }
 
+    // Called when the player 'request for draw' state is changed
     toggleDrawRequested(isRequested) {
         this.hand.toggleDrawRequestedStyle(isRequested);
     }
