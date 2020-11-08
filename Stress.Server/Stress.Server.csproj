@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="npm run build-dev" />
+    <Exec Command="if $(ConfigurationName) == Debug npm run build-dev" />
   </Target>
 
 
