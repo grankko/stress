@@ -8,7 +8,7 @@ import { playerOpenCardViewModel } from './cardViewModels/playerOpenCardViewMode
 class playerViewModel {
     constructor(connection, isPlayer) {
         this.isPlayer = isPlayer;           // Indicates if the model represents the player or the opponent
-        this.elementTemplate = '';          // Prefix with elementTemplate and concatenate to get elements in a player agonstic way
+        this.elementTemplate = '';          // Prefix with elementTemplate and concatenate to get elements in a player agnostic way
         this.connection = connection;
 
         if (isPlayer)

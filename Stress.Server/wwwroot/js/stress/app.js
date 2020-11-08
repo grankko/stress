@@ -102,7 +102,8 @@ document.addEventListener('DOMContentLoaded', function () {
         vm.leftStackViewModel.setModel(state.leftStackTopCard);
         vm.rightStackViewModel.setModel(state.rightStackTopCard);
 
-        // Update players models with server state
+        // Update players models with server state.
+        // Server does not know if this client is player one or player two.
         if (connection.playerNumber === 1) {
             vm.playerViewModel.setModel(state.playerOneState);
             vm.opponentViewModel.setModel(state.playerTwoState);

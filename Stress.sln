@@ -3,13 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stress.Game", "Stress.Game\Stress.Game.csproj", "{6E748070-1788-41A1-B936-9D3129B02994}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stress.Game", "Stress.Game\Stress.Game.csproj", "{6E748070-1788-41A1-B936-9D3129B02994}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stress.Game.Tests", "Stress.Game.Tests\Stress.Game.Tests.csproj", "{77231955-25B1-43F2-9168-36AD21407D4E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stress.Game.Tests", "Stress.Game.Tests\Stress.Game.Tests.csproj", "{77231955-25B1-43F2-9168-36AD21407D4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stress.Clients.Desktop", "Stress.Clients.Desktop\Stress.Clients.Desktop.csproj", "{4E1EF7EC-3BF3-4F4B-B604-BC5BC992098D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stress.Server", "Stress.Server\Stress.Server.csproj", "{561F2376-E6D1-4A7B-8D06-0E8616E31D84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stress.Server", "Stress.Server\Stress.Server.csproj", "{561F2376-E6D1-4A7B-8D06-0E8616E31D84}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +23,6 @@ Global
 		{77231955-25B1-43F2-9168-36AD21407D4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77231955-25B1-43F2-9168-36AD21407D4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77231955-25B1-43F2-9168-36AD21407D4E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4E1EF7EC-3BF3-4F4B-B604-BC5BC992098D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4E1EF7EC-3BF3-4F4B-B604-BC5BC992098D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4E1EF7EC-3BF3-4F4B-B604-BC5BC992098D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4E1EF7EC-3BF3-4F4B-B604-BC5BC992098D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{561F2376-E6D1-4A7B-8D06-0E8616E31D84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{561F2376-E6D1-4A7B-8D06-0E8616E31D84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{561F2376-E6D1-4A7B-8D06-0E8616E31D84}.Release|Any CPU.ActiveCfg = Release|Any CPU
