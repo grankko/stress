@@ -20,7 +20,7 @@ class startGameViewModel {
                 me.connection.sessionKey = result;
                 me.connection.playerNumber = 1; // Creating player is player one
 
-                $('gameCode').innerText = `Game key: ${result}`;
+                $('gameCodeLabel').innerText = `Game key: ${result}`;
                 $('joinGamePanel').style.display = 'none';
                 $('loadingPanel').style.display = 'block';
                 $('createGameButton').disabled = true;

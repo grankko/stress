@@ -41,7 +41,7 @@ namespace Stress.Server.Services
 
         private string GenerateCandidateKey()
         {
-            const string validCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            const string validCharacters = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ123456789";
             string keyCandidate = String.Empty;
             Random randomizer = new Random();
 
