@@ -1,15 +1,13 @@
-﻿* {
-    box-sizing: border-box;
-    padding: 0;
+﻿body, html {
     margin: 0;
+    padding: 0;
 }
 
-html {
-    height: 100%;
+* {
+    box-sizing: border-box;
 }
 
 body {
-    min-height: 100%;
     font-family: sans-serif;
     font-size: 1.7rem;
     font-weight: bold;
@@ -66,7 +64,7 @@ input[type=text] {
 .gamePanel {
     display: none;
     grid-template-columns: 1fr 4fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 3fr 1fr;
     grid-gap: 5px 5px;
     grid-template-areas: ". . ." ". . ." ". . .";
     justify-items: center;
@@ -122,16 +120,8 @@ input[type=text] {
     touch-action: none;
 }
 
-.opponentCardsLeft {
-    position: absolute;
-    top: 30px;
-    left: 30px;
-}
-
-.playerCardsLeft {
-    position: absolute;
-    bottom: 30px;
-    right: 30px;
+.cardsLeft {
+    display: inline-block;
 }
 
 @media screen and (max-width: 767px) {
@@ -141,6 +131,10 @@ input[type=text] {
     }
 
     .infoLabel {
+        font-size: 0.7rem;
+    }
+
+    .cardsLeft {
         font-size: 0.7rem;
     }
 
@@ -154,20 +148,6 @@ input[type=text] {
     .stressButton {
         background-color: #ff0000;
         padding: 10px 10px;
-        font-size: 0.7rem;
-    }
-
-    .opponentCardsLeft {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        font-size: 0.7rem;
-    }
-
-    .playerCardsLeft {
-        position: absolute;
-        bottom: 10px;
-        right: 10px;
         font-size: 0.7rem;
     }
 }
