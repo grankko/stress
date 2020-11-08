@@ -73,7 +73,7 @@ input[type=text] {
     height: 100vh;
 }
 
-.opponentOptions {
+.opponentHandPanel {
     grid-column: 1;
     grid-row: 1;
 }
@@ -83,7 +83,7 @@ input[type=text] {
     grid-row: 1;
 }
 
-.opponentInfo {
+.opponentInfoPanel {
     grid-column: 3;
     grid-row: 1;
 }
@@ -98,7 +98,7 @@ input[type=text] {
     grid-row: 2;
 }
 
-.playerInfo {
+.playerInfoPanel {
     grid-column: 1;
     grid-row: 3;
 }
@@ -108,7 +108,7 @@ input[type=text] {
     grid-row: 3;
 }
 
-.playerOptions {
+.playerHandPanel {
     grid-column: 3;
     grid-row: 3;
 }
@@ -146,20 +146,11 @@ input[type=text] {
     }
 
     .stressButton {
-        background-color: #ff0000;
         padding: 10px 10px;
         font-size: 0.7rem;
     }
 
     .gamePanel {
-        display: none;
-        grid-template-columns: 1fr 4fr 1fr;
-        grid-template-rows: 1fr 3fr 1fr;
-        grid-gap: 5px 5px;
-        grid-template-areas: ". . ." ". . ." ". . .";
-        justify-items: center;
-        align-items: center;
-        width: 100vw;
         height: 80vh;
     }
 
@@ -174,7 +165,6 @@ input[type=text] {
     }
 
     .stressButton {
-        background-color: #ff0000;
         padding: 20px 20px;
     }
 }
