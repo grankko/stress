@@ -29,7 +29,7 @@ button {
 }
 
 input[type=text] {
-    width: 100%;
+    width: 80%;
     height: 40px;
     font-size: large;
     margin-top: 5px;
@@ -54,18 +54,18 @@ input[type=text] {
 }
 
 .startOptionPanel {
-    max-width: 300px;
+    max-width: 500px;
     margin: 15px;
 }
+
 .endPanel {
     max-width: 200px;
     display: none;
 }
 
 .gamePanel {
-    visibility: hidden;
-    display: grid;
-    grid-template-columns: 1fr 3fr 1fr;
+    display: none;
+    grid-template-columns: 1fr 4fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
     grid-gap: 5px 5px;
     grid-template-areas: ". . ." ". . ." ". . .";
@@ -118,4 +118,70 @@ input[type=text] {
 .playingCard {
     font-size: 9rem;
     font-weight: normal;
+    display: inline-block;
+    touch-action: none;
+}
+
+.opponentCardsLeft {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+}
+
+.playerCardsLeft {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+}
+
+@media screen and (max-width: 767px) {
+    .playingCard {
+        font-size: 5rem;
+        font-weight: normal;
+    }
+
+    .infoLabel {
+        font-size: 0.7rem;
+    }
+
+    .startPanel {
+        position: fixed;
+        top: 20%;
+        left: 5%;
+        transform: translate(-5%, 0);
+    }
+
+    .stressButton {
+        background-color: #ff0000;
+        padding: 10px 10px;
+        font-size: 0.7rem;
+    }
+
+    .opponentCardsLeft {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        font-size: 0.7rem;
+    }
+
+    .playerCardsLeft {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        font-size: 0.7rem;
+    }
+}
+
+@media screen and (max-width: 767px) and (orientation: landscape) {
+    .startPanel {
+        position: fixed;
+        top: 5%;
+        left: 5%;
+        transform: translate(-5%, 0);
+    }
+
+    .stressButton {
+        background-color: #ff0000;
+        padding: 20px 20px;
+    }
 }

@@ -18,7 +18,7 @@ class cardViewModel {
             this.element.innerText = '';
         } else {
             this.element.innerText = cardShortHandJsRepresentation.get(model).char;
-            this.element.style.color = cardShortHandJsRepresentation.get(model).char;
+            this.element.style.color = cardShortHandJsRepresentation.get(model).color;
             this.element.dataset.cardShortHand = model;
         }
     }

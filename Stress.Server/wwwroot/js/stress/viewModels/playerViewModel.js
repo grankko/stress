@@ -16,10 +16,10 @@ class playerViewModel {
         else
             this.elementTemplate = 'opponent';
         
-        this.cardSlot1 = new playerOpenCardViewModel(connection, `${this.elementTemplate}Slot1`);
-        this.cardSlot2 = new playerOpenCardViewModel(connection, `${this.elementTemplate}Slot2`);
-        this.cardSlot3 = new playerOpenCardViewModel(connection, `${this.elementTemplate}Slot3`);
-        this.cardSlot4 = new playerOpenCardViewModel(connection, `${this.elementTemplate}Slot4`);
+        this.cardSlot1 = new playerOpenCardViewModel(connection, `${this.elementTemplate}Slot1`, isPlayer);
+        this.cardSlot2 = new playerOpenCardViewModel(connection, `${this.elementTemplate}Slot2`, isPlayer);
+        this.cardSlot3 = new playerOpenCardViewModel(connection, `${this.elementTemplate}Slot3`, isPlayer);
+        this.cardSlot4 = new playerOpenCardViewModel(connection, `${this.elementTemplate}Slot4`, isPlayer);
 
         this.hand = new playerHandCardViewModel(connection, `${this.elementTemplate}Hand`, isPlayer);
         this.hand.setModel('closed');

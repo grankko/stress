@@ -40,8 +40,8 @@ class mainViewModel {
 
     // Hide join/create panel and show game panel
     showGame() {
-        for (let el of document.querySelectorAll('.startPanel')) el.style.visibility = 'hidden';
-        for (let el of document.querySelectorAll('.gamePanel')) el.style.visibility = 'visible';
+        for (let el of document.querySelectorAll('.startPanel')) el.style.display = 'none';
+        for (let el of document.querySelectorAll('.gamePanel')) el.style.display = 'grid';
     }
 
     // Show winner panel and resets some state for a potential rematch

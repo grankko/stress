@@ -10,6 +10,10 @@
         "dist/browser/signalr.js",
         "dist/browser/signalr.min.js"
       ]
+    },
+    {
+      "library": "interact.js@1.10.0",
+      "destination": "wwwroot/js/interact.js/"
     }
   ]
 }

@@ -18,13 +18,16 @@ class stackCardViewModel extends cardViewModel {
 
         var me = this;
 
-        this.element.addEventListener('drop', function (event) {
-            event.preventDefault();
+        function droppedListener(event) {
+            var droppedCard = event.relatedTarget;
+            var cardSlot = parseInt(droppedCard.dataset.slot);
+            me.connection.invoke('playerPlaysCardOnStack', me.connection.sessionKey, me.connection.playerNumber, cardSlot, me.isLeftStack);
+        }
 
-            var cardSlot = event.dataTransfer.getData("text");
-            event.dataTransfer.clearData();
-            me.connection.invoke('playerPlaysCardOnStack', me.connection.sessionKey, me.connection.playerNumber, parseInt(cardSlot), me.isLeftStack);
+        interact(this.element).dropzone({
+            ondrop: droppedListener
         });
+
     }
 
     // Make the stack droppable

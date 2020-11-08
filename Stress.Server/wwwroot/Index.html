@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game of Stress</title>
     <link href="styles/styles.css" rel="stylesheet" />
 </head>
@@ -21,28 +22,29 @@
         <div class="startOptionPanel" id="loadingPanel" style="display: none;">
             <img src="images/spinner.gif" alt="loader" />
             <span class="waitingLabel">waiting for opponent..</span>
-            <span id="gameCode">Game code: cdSER42</span>
+            <div>
+                <span id="gameCode">Game code: cdSER42</span>
+            </div>
         </div>
-
     </div>
 
     <div class="gamePanel">
         <div class="opponentOptions">
-            <span class="playingCard" id="opponentHand"></span>
-            <span id="opponentHandCardsLeft"></span>
+            <div class="playingCard" id="opponentHand"></div>
+            <span class="opponentCardsLeft" id="opponentHandCardsLeft"></span>
         </div>
         <div class="opponentPanel">
-            <span class="playingCard" id="opponentSlot1">&#127137;</span>
-            <span class="playingCard" id="opponentSlot2">&#127137;</span>
-            <span class="playingCard" id="opponentSlot3">&#127137;</span>
-            <span class="playingCard" id="opponentSlot4">&#127137;</span>
+            <div class="playingCard" id="opponentSlot1">&#127137;</div>
+            <div class="playingCard" id="opponentSlot2">&#127137;</div>
+            <div class="playingCard" id="opponentSlot3">&#127137;</div>
+            <div class="playingCard" id="opponentSlot4">&#127137;</div>
         </div>
         <div class="opponentInfo">
             <span class="infoLabel" id="opponentInfoLabel"></span>
         </div>
         <div class="tablePanel">
-            <span class="playingCard" id="leftStack">&#127137;</span>
-            <span class="playingCard" id="rightStack">&#127137;</span>
+            <div class="playingCard" id="leftStack">&#127137;</div>
+            <div class="playingCard" id="rightStack">&#127137;</div>
             <div class="endPanel" id="playerWonPanel">
                 <span id="playerWonLabel"></span>
                 <button id="restartGameButton">Play again?</button>
@@ -55,18 +57,19 @@
             <span class="infoLabel" id="playerInfoLabel"></span>
         </div>
         <div class="playerPanel">
-            <span class="playingCard" id="playerSlot1" data-slot="1" draggable="true">&#127137;</span>
-            <span class="playingCard" id="playerSlot2" data-slot="2" draggable="true">&#127137;</span>
-            <span class="playingCard" id="playerSlot3" data-slot="3" draggable="true">&#127137;</span>
-            <span class="playingCard" id="playerSlot4" data-slot="4" draggable="true">&#127137;</span>
+            <div class="playingCard" id="playerSlot1" data-slot="1">&#127137;</div>
+            <div class="playingCard" id="playerSlot2" data-slot="2">&#127137;</div>
+            <div class="playingCard" id="playerSlot3" data-slot="3">&#127137;</div>
+            <div class="playingCard" id="playerSlot4" data-slot="4">&#127137;</div>
         </div>
         <div class="playerOptions">
-            <span class="playingCard" id="playerHand"></span>
-            <span id="playerHandCardsLeft"></span>
+            <div class="playingCard" id="playerHand"></div>
+            <span class="playerCardsLeft" id="playerHandCardsLeft"></span>
         </div>
     </div>
 
     <script src="js/signalr/dist/browser/signalr.js"></script>
+    <script src="js/interact.js/interact.min.js"></script>
     <script src="js/stress/app.js" type="module"></script>
 </body>
 </html>
