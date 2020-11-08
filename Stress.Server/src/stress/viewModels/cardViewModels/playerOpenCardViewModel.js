@@ -1,6 +1,7 @@
 ﻿'use strict';
 
 import { cardViewModel } from './cardViewModel.js';
+import interact from 'interactjs';
 
 // Represents one of the four open playable cards
 class playerOpenCardViewModel extends cardViewModel {

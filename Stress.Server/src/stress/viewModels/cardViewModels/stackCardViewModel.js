@@ -1,6 +1,7 @@
 ﻿'use strict';
 
 import { cardViewModel } from './cardViewModel.js';
+import interact from 'interactjs'
 
 // Represents the top card of one of the stacks the player can play their open cards on.
 class stackCardViewModel extends cardViewModel {

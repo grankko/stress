@@ -4,6 +4,7 @@ import { stackCardViewModel } from './viewModels/cardViewModels/stackCardViewMod
 import { playerViewModel } from './viewModels/playerViewModel.js'
 import { startGameViewModel } from './viewModels/startGameViewModel.js'
 import { $ } from './utils/viewUtils.js';
+import * as signalR from '@microsoft/signalr';
 
 class mainViewModel {
     constructor(connection) {

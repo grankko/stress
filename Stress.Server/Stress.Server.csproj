@@ -12,5 +12,13 @@
     <None Include="wwwroot\index.html" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\js\" />
+  </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="npm run build-dev" />
+  </Target>
+
 
 </Project>
