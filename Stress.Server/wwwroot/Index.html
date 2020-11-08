@@ -10,12 +10,12 @@
     <div class="startPanel">
         <div class="startOptionPanel" id="createGamePanel">
             Start a game of Stress..
-            <input id="create_nickName" type="text" placeholder="Enter your name.." />
+            <input id="create_nickName" type="text" placeholder="Enter your name.." maxlength="8" />
             <button id="createGameButton">Create game</button>
         </div>
         <div class="startOptionPanel" id="joinGamePanel">
             ..or join an existing one
-            <input id="join_nickName" type="text" placeholder="Enter your name.." />
+            <input id="join_nickName" type="text" placeholder="Enter your name.." maxlength="8" />
             <input id="join_sessionKey" type="text" placeholder="Enter the game key.." />
             <button id="joinGameButton">Join game</button>
         </div>
@@ -30,7 +30,6 @@
 
     <div class="gamePanel">
         <div class="opponentHandPanel">
-            <span class="cardsLeft" id="opponentHandCardsLeft"></span>
             <div class="playingCard" id="opponentHand"></div>
         </div>
         <div class="opponentPanel">
@@ -41,6 +40,7 @@
         </div>
         <div class="opponentInfoPanel">
             <span class="infoLabel" id="opponentInfoLabel"></span>
+            <span class="cardsLeftLabel" id="opponentHandCardsLeft"></span>
         </div>
         <div class="tablePanel">
             <div class="playingCard" id="leftStack">&#127137;</div>
@@ -55,6 +55,7 @@
         </div>
         <div class="playerInfoPanel">
             <span class="infoLabel" id="playerInfoLabel"></span>
+            <span class="cardsLeftLabel" id="playerHandCardsLeft"></span>
         </div>
         <div class="playerPanel">
             <div class="playingCard" id="playerSlot1" data-slot="1">&#127137;</div>
@@ -64,7 +65,6 @@
         </div>
         <div class="playerHandPanel">
             <div class="playingCard" id="playerHand"></div>
-            <span class="cardsLeft" id="playerHandCardsLeft"></span>
         </div>
     </div>
 

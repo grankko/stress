@@ -11,6 +11,7 @@ body {
     font-family: sans-serif;
     font-size: 1.7rem;
     font-weight: bold;
+    background-color: aliceblue;
 }
 
 button {
@@ -120,13 +121,14 @@ input[type=text] {
     touch-action: none;
 }
 
-.cardsLeft {
-    display: inline-block;
+.cardsLeftLabel {
+    font-size: 3rem;
+    display: block;
 }
 
 @media screen and (max-width: 767px) {
     .playingCard {
-        font-size: 5rem;
+        font-size: 4rem;
         font-weight: normal;
     }
 
@@ -134,8 +136,8 @@ input[type=text] {
         font-size: 0.7rem;
     }
 
-    .cardsLeft {
-        font-size: 0.7rem;
+    .cardsLeftLabel {
+        font-size: 1rem;
     }
 
     .startPanel {
