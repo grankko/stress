@@ -150,6 +150,19 @@ input[type=text] {
         padding: 10px 10px;
         font-size: 0.7rem;
     }
+
+    .gamePanel {
+        display: none;
+        grid-template-columns: 1fr 4fr 1fr;
+        grid-template-rows: 1fr 3fr 1fr;
+        grid-gap: 5px 5px;
+        grid-template-areas: ". . ." ". . ." ". . .";
+        justify-items: center;
+        align-items: center;
+        width: 100vw;
+        height: 80vh;
+    }
+
 }
 
 @media screen and (max-width: 767px) and (orientation: landscape) {
