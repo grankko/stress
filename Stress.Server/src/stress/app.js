@@ -51,8 +51,8 @@ class mainViewModel {
         this.playerViewModel.toggleDrawRequested(false);
         this.opponentViewModel.toggleDrawRequested(false);
 
-        this.leftStackViewModel.setModel(null);
-        this.rightStackViewModel.setModel(null);
+        this.leftStackViewModel.setStackModel(null, 0);
+        this.rightStackViewModel.setStackModel(null, 0);
 
         $('playerWonPanel').style.display = 'block';
         $('playerWonLabel').innerText = `${winnerName} won!`;
