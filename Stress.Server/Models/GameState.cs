@@ -11,5 +11,7 @@
         public string WinnerName { get; set; }
         public int NewGameRequestedByPlayer { get; set; }
         public bool RematchStarted { get; set; }
+        public int LeftStackSize { get; set; }
+        public int RightStackSize { get; set; }
     }
 }

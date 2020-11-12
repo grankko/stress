@@ -100,8 +100,8 @@ document.addEventListener('DOMContentLoaded', function () {
             vm.initialize()
 
         // Update stacks with server state
-        vm.leftStackViewModel.setModel(state.leftStackTopCard);
-        vm.rightStackViewModel.setModel(state.rightStackTopCard);
+        vm.leftStackViewModel.setStackModel(state.leftStackTopCard, state.leftStackSize);
+        vm.rightStackViewModel.setStackModel(state.rightStackTopCard, state.rightStackSize);
 
         // Update players models with server state.
         // Server does not know if this client is player one or player two.

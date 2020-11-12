@@ -16,13 +16,18 @@ class playerOpenCardViewModel extends cardViewModel {
     // wants to make a move.
     enableDragStart() {
 
+        function dragStartListener(event) {
+            var target = event.target;
+            target.style.opacity = '0.5';
+        }
+
         function dragMoveListener(event) {
             var target = event.target,
                 // keep the dragged position in the data-x/data-y attributes
                 x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
                 y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
 
-            // translate the element
+            // move card by applying transform
             target.style.webkitTransform =
                 target.style.transform =
                 'translate(' + x + 'px, ' + y + 'px)';
@@ -34,6 +39,10 @@ class playerOpenCardViewModel extends cardViewModel {
 
         function dragEndListener(event) {
             var target = event.target;
+
+            target.style.opacity = '1';
+
+            // move back the card when dropped and reset previous recorded delta in x/y
             target.style.webKitTransform =
                 target.style.transform = 'none';
 
@@ -42,6 +51,7 @@ class playerOpenCardViewModel extends cardViewModel {
         }
 
         interact(this.element).draggable({
+            onstart: dragStartListener,
             onmove: dragMoveListener,
             onend: dragEndListener
         });

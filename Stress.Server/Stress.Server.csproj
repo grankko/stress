@@ -16,9 +16,5 @@
     <Folder Include="wwwroot\js\" />
   </ItemGroup>
 
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="if $(ConfigurationName) == Debug npm run build-dev" />
-  </Target>
-
 
 </Project>

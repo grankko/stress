@@ -122,6 +122,24 @@ input[type=text] {
     touch-action: none;
 }
 
+.stackPanel {
+    display: inline-block;
+    text-align: center;
+}
+
+.stackInfoLabel {
+    font-size: 1rem;
+    vertical-align: top;
+    opacity: 0.5;
+}
+
+.stackPlayingCard {
+    font-size: 9rem;
+    font-weight: normal;
+    display: block;
+    touch-action: none;
+}
+
 .cardsLeftLabel {
     font-size: 3rem;
     display: block;
@@ -131,6 +149,14 @@ input[type=text] {
     .playingCard {
         font-size: 4rem;
         font-weight: normal;
+    }
+
+    .stackInfoLabel {
+        font-size: 0.7rem;
+    }
+
+    .stackPlayingCard {
+        font-size: 4rem;
     }
 
     .infoLabel {

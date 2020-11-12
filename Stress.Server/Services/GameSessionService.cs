@@ -51,7 +51,9 @@ namespace Stress.Server.Services
             state.PlayerOneState = GetStateOfPlayer(_gameplay.PlayerOne, 1);
             state.PlayerTwoState = GetStateOfPlayer(_gameplay.PlayerTwo, 2);
             state.LeftStackTopCard = _gameplay.LeftStack.TopCard?.ShortName;
+            state.LeftStackSize = _gameplay.LeftStack.Cards.Count;
             state.RightStackTopCard = _gameplay.RightStack.TopCard?.ShortName;
+            state.RightStackSize = _gameplay.RightStack.Cards.Count;
 
             if (_gameplay.PlayerOne.HasWon)
                 state.WinnerName = _gameplay.PlayerOne.NickName;

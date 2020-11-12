@@ -1,6 +1,7 @@
 ﻿'use strict';
 
 import { cardViewModel } from './cardViewModel.js';
+import { $ } from '../../utils/viewUtils.js';
 import interact from 'interactjs'
 
 // Represents the top card of one of the stacks the player can play their open cards on.
@@ -12,6 +13,19 @@ class stackCardViewModel extends cardViewModel {
 
         this.enableDrop();
         this.enableDragOver();
+    }
+
+    setStackModel(card, stackSize) {
+        this.setModel(card);
+        var stackSizeText = stackSize;
+        if (stackSize === 0)
+            stackSizeText = '\xa0'; // Non breaking space char
+
+        if (this.isLeftStack) 
+            $('leftStackSizeLabel').innerText = stackSizeText;
+        else
+            $('rightStackSizeLabel').innerText = stackSizeText;
+            
     }
 
     // When a player drops a card on the stack, signal is sent to the server that the player wants to make this move
