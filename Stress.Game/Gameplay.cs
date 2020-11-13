@@ -123,7 +123,7 @@ namespace Stress.Game
                 PlayerWon?.Invoke(player, new EventArgs());
         }
 
-        public void PlayerCallsStressEvent(Player player)
+        public Player PlayerCallsStressEvent(Player player)
         {
             Player stressEventLoser;
 
@@ -151,6 +151,7 @@ namespace Stress.Game
                 stressEventLoser.PickUpCard(RightStack.DrawCard());
 
             Draw();
+            return stressEventLoser;
         }
 
         private void Initialize()

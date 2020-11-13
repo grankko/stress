@@ -9,5 +9,6 @@
         public string CardSlot4 { get; set; }
         public int CardsLeft { get; set; }
         public int PlayerNumber { get; set; }
+        public bool LostStressEvent { get; set; }
     }
 }

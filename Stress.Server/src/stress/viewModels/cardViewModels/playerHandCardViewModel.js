@@ -9,10 +9,24 @@ class playerHandCardViewModel extends cardViewModel {
 
         this.drawSignaled = false;
 
+        this.enableAnimationReset();
+
         // Clicking the opponents card should not signal a draw event
         if (isPlayersHand)
             this.enableSignalDrawClick();
-        
+    }
+
+    // The player lost a stress event, run card animation
+    lostStressEvent() {
+        this.element.classList.add('playerHandCardInStress');
+    }
+
+    enableAnimationReset() {
+        var me = this;
+
+        this.element.addEventListener('animationend', function (event) {
+            me.element.classList.remove('playerHandCardInStress');
+        });
     }
 
     // Sends a signal to the server that the player wants to draw from his closed stack.

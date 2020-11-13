@@ -7,6 +7,7 @@ import interact from 'interactjs';
 class playerOpenCardViewModel extends cardViewModel {
     constructor(connection, elementId, isPlayer) {
         super(connection, elementId);
+        this.isPlayer = isPlayer;
 
         if (isPlayer)
             this.enableDragStart();
@@ -15,10 +16,11 @@ class playerOpenCardViewModel extends cardViewModel {
     setModel(model) {
         super.setModel(model);
 
-        // Reset css transition animation after card has been dropped on stack
-        this.element.classList.remove('playingCard');
-        this.element.classList.add('playableCard');
-
+        if (this.isPlayer) {
+            // Reset css transition animation after card has been dropped on stack
+            this.element.classList.remove('playingCard');
+            this.element.classList.add('playableCard');
+        }
     }
 
     // Dragging an open card to one of the stacks will send a signal to the server that the player

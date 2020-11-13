@@ -73,12 +73,16 @@ namespace Stress.Server.Services
 
         public GameState PlayerCallsStress(int playerNumber)
         {
+            Player loser = null;
             if (playerNumber == 1)
-                _gameplay.PlayerCallsStressEvent(_gameplay.PlayerOne); // todo: ugly
+                loser = _gameplay.PlayerCallsStressEvent(_gameplay.PlayerOne); // todo: ugly
             else if (playerNumber == 2)
-                _gameplay.PlayerCallsStressEvent(_gameplay.PlayerTwo);
+                loser = _gameplay.PlayerCallsStressEvent(_gameplay.PlayerTwo);
 
-            return GetStateOfPlay();
+            var state = GetStateOfPlay();
+            state.PlayerOneState.LostStressEvent = loser.IsPlayerOne;
+            state.PlayerTwoState.LostStressEvent = !loser.IsPlayerOne;
+            return state;
         }
 
         public GameState RequestNewGame(int playerNumber)

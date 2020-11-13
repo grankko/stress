@@ -15,14 +15,19 @@ class playerViewModel {
             this.elementTemplate = 'player';
         else
             this.elementTemplate = 'opponent';
-        
+
         this.cardSlot1 = new playerOpenCardViewModel(connection, `${this.elementTemplate}Slot1`, isPlayer);
         this.cardSlot2 = new playerOpenCardViewModel(connection, `${this.elementTemplate}Slot2`, isPlayer);
         this.cardSlot3 = new playerOpenCardViewModel(connection, `${this.elementTemplate}Slot3`, isPlayer);
         this.cardSlot4 = new playerOpenCardViewModel(connection, `${this.elementTemplate}Slot4`, isPlayer);
 
+        this.cardsLeftLabelElement = $(`${this.elementTemplate}HandCardsLeft`);
+        this.infoLabelElement = $(`${this.elementTemplate}InfoLabel`);
+
         this.hand = new playerHandCardViewModel(connection, `${this.elementTemplate}Hand`, isPlayer);
         this.hand.setModel('closed');
+
+        this.enableAnimationReset();
     }
 
     setModel(model) {
@@ -31,13 +36,28 @@ class playerViewModel {
         this.cardSlot3.setModel(model.cardSlot3);
         this.cardSlot4.setModel(model.cardSlot4);
 
-        $(`${this.elementTemplate}HandCardsLeft`).innerText = model.cardsLeft;
-        $(`${this.elementTemplate}InfoLabel`).innerText = model.nickName;
+        this.cardsLeftLabelElement.innerText = model.cardsLeft;
+        this.infoLabelElement.innerText = model.nickName;
+
+        if (model.lostStressEvent === true) {
+            this.hand.lostStressEvent();
+
+            // The player lost a stress event, run stack label animation
+            this.cardsLeftLabelElement.classList.add('cardsLeftLabelInStress');
+        }
     }
 
     // Called when the player 'request for draw' state is changed
     toggleDrawRequested(isRequested) {
         this.hand.toggleDrawRequestedStyle(isRequested);
+    }
+
+    enableAnimationReset() {
+        var me = this;
+
+        this.cardsLeftLabelElement.addEventListener('animationend', function (event) {
+            me.cardsLeftLabelElement.classList.remove('cardsLeftLabelInStress');
+        });
     }
 }
 
