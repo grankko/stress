@@ -1,4 +1,11 @@
-﻿body, html {
+﻿$smaller: 0.7rem;
+$small: 1rem;
+$medium: 1.7rem;
+$large: 3rem;
+$larger: 4rem;
+$big: 9rem;
+
+body, html {
     margin: 0;
     padding: 0;
     touch-action: none;
@@ -10,7 +17,7 @@
 
 body {
     font-family: sans-serif;
-    font-size: 1.7rem;
+    font-size: $medium;
     font-weight: bold;
     background-color: aliceblue;
 }
@@ -43,14 +50,15 @@ input[type=text] {
     line-height: 120px;
     vertical-align: text-bottom;
     font-weight: bold;
-    font-size: 1rem;
+    font-size: $small;
 }
 
 .startPanel {
+    $left-offset: 50%;
     position: fixed;
     top: 20%;
-    left: 50%;
-    transform: translate(-50%, 0);
+    left: $left-offset;
+    transform: translate(($left-offset*-1), 0);
 }
 
 .startOptionPanel {
@@ -116,7 +124,7 @@ input[type=text] {
 }
 
 .playingCard {
-    font-size: 9rem;
+    font-size: $big;
     font-weight: normal;
     display: inline-block;
     touch-action: none;
@@ -128,72 +136,74 @@ input[type=text] {
 }
 
 .stackInfoLabel {
-    font-size: 1rem;
+    font-size: $small;
     vertical-align: top;
     opacity: 0.5;
 }
 
 .stackPlayingCard {
-    font-size: 9rem;
+    font-size: $big;
     font-weight: normal;
     display: block;
     touch-action: none;
 }
 
 .cardsLeftLabel {
-    font-size: 3rem;
+    font-size: $large;
     display: block;
 }
 
 @media screen and (max-width: 767px) {
     .playingCard {
-        font-size: 4rem;
+        font-size: $larger;
         font-weight: normal;
     }
 
     .stackInfoLabel {
-        font-size: 0.7rem;
+        font-size: $smaller;
     }
 
     .stackPlayingCard {
-        font-size: 4rem;
+        font-size: $larger;
     }
 
     .infoLabel {
-        font-size: 0.7rem;
+        font-size: $smaller;
     }
 
     .cardsLeftLabel {
-        font-size: 1rem;
+        font-size: $small;
     }
 
+    $left-offset: 5%;
     .startPanel {
         position: fixed;
         top: 20%;
-        left: 5%;
-        transform: translate(-5%, 0);
+        left: $left-offset;
+        transform: translate(($left-offset*-1), 0);
     }
 
     .stressButton {
         padding: 10px 10px;
-        font-size: 0.7rem;
+        font-size: $smaller;
     }
 
     .gamePanel {
         height: 80vh;
     }
-
 }
 
 @media screen and (max-width: 767px) and (orientation: landscape) {
+    $offset: 5%;
     .startPanel {
         position: fixed;
-        top: 5%;
-        left: 5%;
-        transform: translate(-5%, 0);
+        top: $offset;
+        left: $offset;
+        transform: translate(($offset*-1), 0);
     }
 
     .stressButton {
-        padding: 20px 20px;
+        $padding: 20px;
+        padding: $padding $padding;
     }
 }

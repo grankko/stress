@@ -349,3 +349,5 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 /Stress.Server/wwwroot/js/stress.bundle.js
+/Stress.Server/wwwroot/styles/styles.css
+

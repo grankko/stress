@@ -13,5 +13,6 @@
         public bool RematchStarted { get; set; }
         public int LeftStackSize { get; set; }
         public int RightStackSize { get; set; }
+        public bool IsReady { get; set; }
     }
 }

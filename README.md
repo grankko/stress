@@ -7,6 +7,7 @@ https://sv.wikipedia.org/wiki/Stress_(kortspel)
 - .net core backend with SignalR hub to support multiple 2 player games
 - Client in html/js/css
 - Touch support through [interact.js](https://interactjs.io/)
+- Webpack for bundling and SASS support
 
 Live at: https://granakerprod-stress.azurewebsites.net/
 

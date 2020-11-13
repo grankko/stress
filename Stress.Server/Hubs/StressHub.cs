@@ -33,17 +33,17 @@ namespace Stress.Server.Hubs
 
             var session = _sessionService.GameSessions[sessionKey];
             await Groups.AddToGroupAsync(this.Context.ConnectionId, sessionKey);
-            session.AddPlayer(nickName);
+            var gameState = session.AddPlayer(nickName);
 
-            if (session.CanGameStart)
-                await Clients.Group(sessionKey).SendAsync("gameStateChanged", session.GetStateOfPlay());
+            if (gameState.IsReady)
+                await Clients.Group(sessionKey).SendAsync("gameStateChanged", gameState);
         }
 
         public async void PlayerPlaysCardOnStack(string sessionKey, int playerNumber, int slotNumber, bool isLeftStack)
         {
             var session = _sessionService.GameSessions[sessionKey];
-            session.PlayerPlaysCardOnStack(playerNumber, slotNumber, isLeftStack);
-            await Clients.Group(sessionKey).SendAsync("gameStateChanged", session.GetStateOfPlay());
+            var gameState = session.PlayerPlaysCardOnStack(playerNumber, slotNumber, isLeftStack);
+            await Clients.Group(sessionKey).SendAsync("gameStateChanged", gameState);
         }
 
         public async void PlayerWantsToDraw(string sessionKey, int playerNumber)
@@ -57,9 +57,9 @@ namespace Stress.Server.Hubs
         public async void PlayerCallsStress(string sessionKey, int playerNumber)
         {
             var session = _sessionService.GameSessions[sessionKey];
-            session.PlayerCallsStress(playerNumber);
+            var gameState = session.PlayerCallsStress(playerNumber);
 
-            await Clients.Group(sessionKey).SendAsync("gameStateChanged", session.GetStateOfPlay());
+            await Clients.Group(sessionKey).SendAsync("gameStateChanged", gameState);
         }
 
         public async void RequestNewGame(string sessionKey, int playerNumber)

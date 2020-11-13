@@ -25,12 +25,13 @@ namespace Stress.Server.Services
             _gameplay = new Gameplay();
         }
 
-        public void AddPlayer(string nickName)
+        public GameState AddPlayer(string nickName)
         {
             _gameplay.AddPlayer(nickName);
+            return GetStateOfPlay();
         }
 
-        public void PlayerPlaysCardOnStack(int playerNumber, int slotNumber, bool isLeftStack)
+        public GameState PlayerPlaysCardOnStack(int playerNumber, int slotNumber, bool isLeftStack)
         {
             var player = _gameplay.PlayerOne;
             if (playerNumber == 2)
@@ -43,24 +44,7 @@ namespace Stress.Server.Services
             Card cardToPlay = player.OpenCards[slotNumber - 1];
             _gameplay.PlayCardOnStack(player, cardToPlay, stack);
 
-        }
-
-        public GameState GetStateOfPlay()
-        {
-            var state = new GameState();
-            state.PlayerOneState = GetStateOfPlayer(_gameplay.PlayerOne, 1);
-            state.PlayerTwoState = GetStateOfPlayer(_gameplay.PlayerTwo, 2);
-            state.LeftStackTopCard = _gameplay.LeftStack.TopCard?.ShortName;
-            state.LeftStackSize = _gameplay.LeftStack.Cards.Count;
-            state.RightStackTopCard = _gameplay.RightStack.TopCard?.ShortName;
-            state.RightStackSize = _gameplay.RightStack.Cards.Count;
-
-            if (_gameplay.PlayerOne.HasWon)
-                state.WinnerName = _gameplay.PlayerOne.NickName;
-            else if (_gameplay.PlayerTwo.HasWon)
-                state.WinnerName = _gameplay.PlayerTwo.NickName;
-
-            return state;
+            return GetStateOfPlay();
         }
 
         public GameState PlayerWantsToDraw(int playerNumber)
@@ -89,12 +73,14 @@ namespace Stress.Server.Services
             return state;
         }
 
-        public void PlayerCallsStress(int playerNumber)
+        public GameState PlayerCallsStress(int playerNumber)
         {
             if (playerNumber == 1)
                 _gameplay.PlayerCallsStressEvent(_gameplay.PlayerOne); // todo: ugly
             else if (playerNumber == 2)
                 _gameplay.PlayerCallsStressEvent(_gameplay.PlayerTwo);
+
+            return GetStateOfPlay();
         }
 
         public GameState RequestNewGame(int playerNumber)
@@ -119,6 +105,32 @@ namespace Stress.Server.Services
             state.RematchStarted = newGameStarted;
             if (!newGameStarted)
                 state.NewGameRequestedByPlayer = playerNumber;
+
+            return state;
+        }
+
+        private GameState GetStateOfPlay()
+        {
+            var state = new GameState();
+
+            if (!CanGameStart)
+            {
+                state.IsReady = false;
+                return state;
+            }
+
+            state.IsReady = true;
+            state.PlayerOneState = GetStateOfPlayer(_gameplay.PlayerOne, 1);
+            state.PlayerTwoState = GetStateOfPlayer(_gameplay.PlayerTwo, 2);
+            state.LeftStackTopCard = _gameplay.LeftStack.TopCard?.ShortName;
+            state.LeftStackSize = _gameplay.LeftStack.Cards.Count;
+            state.RightStackTopCard = _gameplay.RightStack.TopCard?.ShortName;
+            state.RightStackSize = _gameplay.RightStack.Cards.Count;
+
+            if (_gameplay.PlayerOne.HasWon)
+                state.WinnerName = _gameplay.PlayerOne.NickName;
+            else if (_gameplay.PlayerTwo.HasWon)
+                state.WinnerName = _gameplay.PlayerTwo.NickName;
 
             return state;
         }

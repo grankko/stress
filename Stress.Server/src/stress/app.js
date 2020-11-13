@@ -1,8 +1,9 @@
 ﻿'use strict';
 
-import { stackCardViewModel } from './viewModels/cardViewModels/stackCardViewModel.js'
-import { playerViewModel } from './viewModels/playerViewModel.js'
-import { startGameViewModel } from './viewModels/startGameViewModel.js'
+import '../styles/styles.scss';
+import { stackCardViewModel } from './viewModels/cardViewModels/stackCardViewModel.js';
+import { playerViewModel } from './viewModels/playerViewModel.js';
+import { startGameViewModel } from './viewModels/startGameViewModel.js';
 import { $ } from './utils/viewUtils.js';
 import * as signalR from '@microsoft/signalr';
 
