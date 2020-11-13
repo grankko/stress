@@ -12,12 +12,26 @@ class playerOpenCardViewModel extends cardViewModel {
             this.enableDragStart();
     }
 
+    setModel(model) {
+        super.setModel(model);
+
+        // Reset css transition animation after card has been dropped on stack
+        this.element.classList.remove('playingCard');
+        this.element.classList.add('playableCard');
+
+    }
+
     // Dragging an open card to one of the stacks will send a signal to the server that the player
     // wants to make a move.
     enableDragStart() {
 
         function dragStartListener(event) {
             var target = event.target;
+
+            // Removes css transition on hover while dragging
+            target.classList.remove('playableCard');
+            target.classList.add('playingCard');
+
             target.style.opacity = '0.5';
         }
 
@@ -43,8 +57,8 @@ class playerOpenCardViewModel extends cardViewModel {
             target.style.opacity = '1';
 
             // move back the card when dropped and reset previous recorded delta in x/y
-            target.style.webKitTransform =
-                target.style.transform = 'none';
+            target.style.removeProperty('webkitTransform');
+            target.style.removeProperty('transform');
 
             target.setAttribute('data-x', 0);
             target.setAttribute('data-y', 0);

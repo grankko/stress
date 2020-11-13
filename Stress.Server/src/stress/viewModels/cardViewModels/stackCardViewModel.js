@@ -2,7 +2,7 @@
 
 import { cardViewModel } from './cardViewModel.js';
 import { $ } from '../../utils/viewUtils.js';
-import interact from 'interactjs'
+import interact from 'interactjs';
 
 // Represents the top card of one of the stacks the player can play their open cards on.
 class stackCardViewModel extends cardViewModel {

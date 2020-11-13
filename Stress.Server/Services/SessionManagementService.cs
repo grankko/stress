@@ -1,16 +1,12 @@
-﻿using Microsoft.AspNetCore.SignalR;
-using Stress.Server.Hubs;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Stress.Server.Services
 {
     public class SessionManagementService
     {
         public Dictionary<string, GameSessionService> GameSessions { get; private set; }
-        
+
         public SessionManagementService()
         {
             GameSessions = new Dictionary<string, GameSessionService>();

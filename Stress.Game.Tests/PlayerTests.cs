@@ -1,9 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NuGet.Frameworks;
 using Stress.Game.Cards;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Stress.Game.Tests
 {

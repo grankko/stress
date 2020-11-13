@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 
 namespace Stress.Game.Cards
 {
@@ -9,8 +8,9 @@ namespace Stress.Game.Cards
         public Suit Suit { get; private set; }
 
         public string ShortName
-        { 
-            get {
+        {
+            get
+            {
                 string result = string.Empty;
                 switch (Suit)
                 {
@@ -44,7 +44,7 @@ namespace Stress.Game.Cards
         {
             if (obj == null || !(obj is Card))
                 return false;
-            
+
             Card compareCard = (Card)obj;
             return (compareCard.Suit == this.Suit && compareCard.Rank == Rank);
         }

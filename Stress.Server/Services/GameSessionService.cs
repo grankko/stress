@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.SignalR;
-using Stress.Game;
+﻿using Stress.Game;
 using Stress.Game.Cards;
 using Stress.Server.Models;
-using System;
 
 namespace Stress.Server.Services
 {
@@ -101,7 +99,7 @@ namespace Stress.Server.Services
             }
 
             var state = GetStateOfPlay();
-            
+
             state.RematchStarted = newGameStarted;
             if (!newGameStarted)
                 state.NewGameRequestedByPlayer = playerNumber;

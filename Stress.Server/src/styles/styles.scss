@@ -123,11 +123,25 @@ input[type=text] {
     grid-row: 3;
 }
 
-.playingCard {
+.playingCard, .stackPlayingCard, .playableCard {
     font-size: $big;
     font-weight: normal;
     display: inline-block;
     touch-action: none;
+}
+
+.stackPlayingCard {
+    display: block;
+}
+
+.playableCard {
+    transition: transform 0.3s;
+}
+
+@media (hover: hover) {
+    .playableCard:hover {
+        transform: translateY(-10px);
+    }
 }
 
 .stackPanel {
@@ -141,30 +155,19 @@ input[type=text] {
     opacity: 0.5;
 }
 
-.stackPlayingCard {
-    font-size: $big;
-    font-weight: normal;
-    display: block;
-    touch-action: none;
-}
-
 .cardsLeftLabel {
     font-size: $large;
     display: block;
 }
 
 @media screen and (max-width: 767px) {
-    .playingCard {
+    .playingCard, .stackPlayingCard, .playableCard {
         font-size: $larger;
         font-weight: normal;
     }
 
     .stackInfoLabel {
         font-size: $smaller;
-    }
-
-    .stackPlayingCard {
-        font-size: $larger;
     }
 
     .infoLabel {

@@ -1,9 +1,5 @@
 ﻿using Stress.Game.Cards;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 
 namespace Stress.Game
 {
@@ -138,7 +134,9 @@ namespace Stress.Game
                     stressEventLoser = PlayerTwo;
                 else
                     stressEventLoser = PlayerOne;
-            } else {
+            }
+            else
+            {
                 // Not a legit stress event, calling player loses
                 if (player.IsPlayerOne)
                     stressEventLoser = PlayerOne;

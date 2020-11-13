@@ -1,9 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using Stress.Server.Models;
 using Stress.Server.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Stress.Server.Hubs
@@ -21,7 +17,7 @@ namespace Stress.Server.Hubs
         {
             var sessionKey = _sessionService.CreateNewGameSession();
             _sessionService.GameSessions[sessionKey].AddPlayer(nickName);
-            
+
             await Groups.AddToGroupAsync(this.Context.ConnectionId, sessionKey);
             return sessionKey;
         }
