@@ -20,7 +20,7 @@ namespace Stress.Server.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<GameSessionService> Get()
+        public IEnumerable<IGameSessionService> Get()
         {
             return _sessionService.GameSessions.Values;
         }

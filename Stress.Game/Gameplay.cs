@@ -3,24 +3,13 @@ using System;
 
 namespace Stress.Game
 {
-    public class Gameplay
+    public class Gameplay : IGameplay
     {
         public StackOfCards Deck { get; private set; }
         public Player PlayerOne { get; private set; }
         public Player PlayerTwo { get; private set; }
-
         public OpenStackOfCards LeftStack { get; private set; }
         public OpenStackOfCards RightStack { get; private set; }
-
-        public event EventHandler PlayerWon;
-
-        public bool CanStart()
-        {
-            if (PlayerOne != null && PlayerTwo != null)
-                return true;
-
-            return false;
-        }
 
         public Gameplay()
         {
@@ -48,6 +37,25 @@ namespace Stress.Game
             AddPlayer(playerOneName);
             AddPlayer(playerTwoName);
         }
+
+        public Player GetPlayerByNumber(int number)
+        {
+            if (number == 1)
+                return PlayerOne;
+            else if (number == 2)
+                return PlayerTwo;
+            else
+                throw new ArgumentException("Invalid player number");
+        }
+
+        public bool CanStart()
+        {
+            if (PlayerOne != null && PlayerTwo != null)
+                return true;
+
+            return false;
+        }
+
 
         /// <summary>
         /// If the players are ready, deal the full deck of cards to the players.
@@ -118,12 +126,14 @@ namespace Stress.Game
         {
             if (stack.CanAddCard(card))
                 stack.AddCard(player.PlayOpenCard(card));
-
-            if (player.HasWon)
-                PlayerWon?.Invoke(player, new EventArgs());
         }
 
-        public Player PlayerCallsStressEvent(Player player)
+        public Player PlayerCallsStressEvent(int playerNumber)
+        {
+            return PlayerCallsStressEvent(GetPlayerByNumber(playerNumber));
+        }
+
+        private Player PlayerCallsStressEvent(Player player)
         {
             Player stressEventLoser;
 

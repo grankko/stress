@@ -1,5 +1,10 @@
 ﻿namespace Stress.Server.Models
 {
+
+    /// <summary>
+    /// The only type of message returned to the clients. Any event affecting the game state should
+    /// signal this message back to all clients in the game.
+    /// </summary>
     public class GameState
     {
         public PlayerState PlayerOneState { get; set; }

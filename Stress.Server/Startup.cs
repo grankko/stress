@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Stress.Game;
 using Stress.Server.Hubs;
 using Stress.Server.Services;
 
@@ -22,7 +23,10 @@ namespace Stress.Server
         {
             services.AddControllers();
             services.AddSignalR();
-            services.AddSingleton<SessionManagementService>();
+            services.AddSingleton<ISessionManagementService, SessionManagementService>();
+            services.AddTransient<IGameplay, Gameplay>();
+            services.AddTransient<IGameSessionService>(p =>
+                new GameSessionService(p.GetService<ISessionManagementService>().GenerateNewSessionKey(), p.GetRequiredService<IGameplay>()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

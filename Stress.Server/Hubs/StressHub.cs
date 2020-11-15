@@ -6,9 +6,10 @@ namespace Stress.Server.Hubs
 {
     public class StressHub : Hub
     {
-        private readonly SessionManagementService _sessionService;
+        private const string GameStateChangedMethod = "gameStateChanged";
+        private readonly ISessionManagementService _sessionService;
 
-        public StressHub(SessionManagementService sessionService)
+        public StressHub(ISessionManagementService sessionService)
         {
             _sessionService = sessionService;
         }
@@ -32,14 +33,14 @@ namespace Stress.Server.Hubs
             var gameState = session.AddPlayer(nickName);
 
             if (gameState.IsReady)
-                await Clients.Group(sessionKey).SendAsync("gameStateChanged", gameState);
+                await Clients.Group(sessionKey).SendAsync(GameStateChangedMethod, gameState);
         }
 
         public async void PlayerPlaysCardOnStack(string sessionKey, int playerNumber, int slotNumber, bool isLeftStack)
         {
             var session = _sessionService.GameSessions[sessionKey];
             var gameState = session.PlayerPlaysCardOnStack(playerNumber, slotNumber, isLeftStack);
-            await Clients.Group(sessionKey).SendAsync("gameStateChanged", gameState);
+            await Clients.Group(sessionKey).SendAsync(GameStateChangedMethod, gameState);
         }
 
         public async void PlayerWantsToDraw(string sessionKey, int playerNumber)
@@ -47,7 +48,7 @@ namespace Stress.Server.Hubs
             var session = _sessionService.GameSessions[sessionKey];
 
             var gameState = session.PlayerWantsToDraw(playerNumber);
-            await Clients.Group(sessionKey).SendAsync("gameStateChanged", gameState);
+            await Clients.Group(sessionKey).SendAsync(GameStateChangedMethod, gameState);
         }
 
         public async void PlayerCallsStress(string sessionKey, int playerNumber)
@@ -55,14 +56,14 @@ namespace Stress.Server.Hubs
             var session = _sessionService.GameSessions[sessionKey];
             var gameState = session.PlayerCallsStress(playerNumber);
 
-            await Clients.Group(sessionKey).SendAsync("gameStateChanged", gameState);
+            await Clients.Group(sessionKey).SendAsync(GameStateChangedMethod, gameState);
         }
 
         public async void RequestNewGame(string sessionKey, int playerNumber)
         {
             var session = _sessionService.GameSessions[sessionKey];
             var gameState = session.RequestNewGame(playerNumber);
-            await Clients.Group(sessionKey).SendAsync("gameStateChanged", gameState);
+            await Clients.Group(sessionKey).SendAsync(GameStateChangedMethod, gameState);
         }
     }
 }

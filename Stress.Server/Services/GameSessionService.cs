@@ -4,23 +4,26 @@ using Stress.Server.Models;
 
 namespace Stress.Server.Services
 {
-    public class GameSessionService
+    public class GameSessionService : IGameSessionService
     {
         public string Key { get; private set; }
-        public bool CanGameStart { get => _gameplay.CanStart(); }
 
-        private Gameplay _gameplay;
+        private readonly IGameplay _gameplay;
 
+        private bool CanGameStart { get => _gameplay.CanStart(); }
+
+        // Draw happens first after one player signals, and the other accepts. Needs to track state.
         private bool _playerOneWantsToDraw = false;
         private bool _playerTwoWantsToDraw = false;
 
+        // Rematch happens first after one player signals, and the other accepts. Needs to track state.
         private bool _playerOneWantsNewGame = false;
         private bool _playerTwoWantsNewGame = false;
 
-        public GameSessionService(string key)
+        public GameSessionService(string key, IGameplay gameplay)
         {
             Key = key;
-            _gameplay = new Gameplay();
+            _gameplay = gameplay;
         }
 
         public GameState AddPlayer(string nickName)
@@ -31,9 +34,7 @@ namespace Stress.Server.Services
 
         public GameState PlayerPlaysCardOnStack(int playerNumber, int slotNumber, bool isLeftStack)
         {
-            var player = _gameplay.PlayerOne;
-            if (playerNumber == 2)
-                player = _gameplay.PlayerTwo;
+            var player = _gameplay.GetPlayerByNumber(playerNumber);
 
             var stack = _gameplay.LeftStack;
             if (!isLeftStack)
@@ -54,6 +55,7 @@ namespace Stress.Server.Services
             if (playerNumber == 2)
                 _playerTwoWantsToDraw = true;
 
+            // Execute draw if both players have signaled this
             if (_playerOneWantsToDraw && _playerTwoWantsToDraw)
             {
                 _gameplay.Draw();
@@ -65,6 +67,9 @@ namespace Stress.Server.Services
 
             var state = GetStateOfPlay();
             state.DrawExecuted = drawExecuted;
+
+            // If only one player has signaled interest in a draw event,
+            // include that information in the game state to show the other player.
             if (!drawExecuted)
                 state.DrawRequestedByPlayer = playerNumber;
 
@@ -73,11 +78,7 @@ namespace Stress.Server.Services
 
         public GameState PlayerCallsStress(int playerNumber)
         {
-            Player loser = null;
-            if (playerNumber == 1)
-                loser = _gameplay.PlayerCallsStressEvent(_gameplay.PlayerOne); // todo: ugly
-            else if (playerNumber == 2)
-                loser = _gameplay.PlayerCallsStressEvent(_gameplay.PlayerTwo);
+            Player loser = _gameplay.PlayerCallsStressEvent(playerNumber);
 
             var state = GetStateOfPlay();
             state.PlayerOneState.LostStressEvent = loser.IsPlayerOne;
@@ -94,6 +95,7 @@ namespace Stress.Server.Services
             if (playerNumber == 2)
                 _playerTwoWantsNewGame = true;
 
+            // Initiate rematch if both players have signaled this
             if (_playerOneWantsNewGame && _playerTwoWantsNewGame)
             {
                 _gameplay.RestartGame();
@@ -104,6 +106,8 @@ namespace Stress.Server.Services
 
             var state = GetStateOfPlay();
 
+            // If only one player has signaled interest in a rematch,
+            // include that information in the game state to show the other player.
             state.RematchStarted = newGameStarted;
             if (!newGameStarted)
                 state.NewGameRequestedByPlayer = playerNumber;

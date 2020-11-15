@@ -1,25 +1,26 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 
 namespace Stress.Server.Services
 {
-    public class SessionManagementService
+    public class SessionManagementService : ISessionManagementService
     {
-        public Dictionary<string, GameSessionService> GameSessions { get; private set; }
+        public Dictionary<string, IGameSessionService> GameSessions { get; private set; }
 
         public SessionManagementService()
         {
-            GameSessions = new Dictionary<string, GameSessionService>();
+            GameSessions = new Dictionary<string, IGameSessionService>();
         }
 
         public string CreateNewGameSession()
         {
-            var session = new GameSessionService(GenerateNewSessionKey());
+            var session = Program.ServiceProvider.GetRequiredService<IGameSessionService>();
             GameSessions.Add(session.Key, session);
             return session.Key;
         }
 
-        private string GenerateNewSessionKey()
+        public string GenerateNewSessionKey()
         {
             var candidateKey = GenerateCandidateKey();
             var attempts = 0;
