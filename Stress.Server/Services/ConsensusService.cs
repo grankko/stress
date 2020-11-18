@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace Stress.Server.Services
 {
@@ -13,6 +14,9 @@ namespace Stress.Server.Services
 
         public bool SignalAccept(int participantNumber)
         {
+            if (participantNumber < 1 || participantNumber > _participants.Length)
+                throw new ArgumentException();
+
             _participants[participantNumber-1] = true;
             var haveAllAccepted = _participants.All(p => p == true);
             if (haveAllAccepted)

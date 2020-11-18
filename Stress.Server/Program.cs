@@ -6,7 +6,7 @@ namespace Stress.Server
 {
     public class Program
     {
-        public static IServiceProvider ServiceProvider { get; private set; }
+        public static IServiceProvider ServiceProvider { get; set; }
 
         public static void Main(string[] args)
         {
