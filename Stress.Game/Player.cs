@@ -1,13 +1,16 @@
 ﻿using Stress.Game.Cards;
 using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("Stress.Game.Tests")]
 namespace Stress.Game
 {
     public class Player
     {
         public string NickName { get; set; }
         public bool IsPlayerOne { get; private set; }
+        public int PlayerNumber { get => IsPlayerOne ? 1 : 2; }
 
         /// <summary>
         /// The 0 - 4 open cards a player has to act with

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("Stress.Game.Tests")]
 namespace Stress.Game.Cards
 {
     /// <summary>
@@ -16,7 +18,7 @@ namespace Stress.Game.Cards
             Cards = new Stack<Card>();
         }
 
-        public static StackOfCards CreateFullDeckOfCards()
+        internal static StackOfCards CreateFullDeckOfCards()
         {
             var fullDeck = new StackOfCards();
             foreach (Suit suit in Enum.GetValues(typeof(Suit)))
@@ -29,7 +31,7 @@ namespace Stress.Game.Cards
             return fullDeck;
         }
 
-        public Card DrawCard()
+        internal Card DrawCard()
         {
             if (Cards.Count > 0)
                 return Cards.Pop();
@@ -37,7 +39,7 @@ namespace Stress.Game.Cards
                 return null;
         }
 
-        public void Shuffle()
+        internal void Shuffle()
         {
             var cards = Cards.ToList();
             Random randomizer = new Random();

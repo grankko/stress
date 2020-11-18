@@ -1,6 +1,8 @@
 ﻿using Stress.Game.Cards;
 using System;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("Stress.Game.Tests")]
 namespace Stress.Game
 {
     public class Gameplay : IGameplay

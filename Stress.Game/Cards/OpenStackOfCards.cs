@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("Stress.Game.Tests")]
 namespace Stress.Game.Cards
 {
     /// <summary>
@@ -19,7 +21,7 @@ namespace Stress.Game.Cards
         /// </summary>
         /// <param name="card">Card to add</param>
         /// <param name="isDraw">If game is in draw, all cards are playable</param>
-        public void AddCard(Card card, bool isDraw = false)
+        internal void AddCard(Card card, bool isDraw = false)
         {
             if (card is null)
                 throw new ArgumentNullException(nameof(card));
@@ -35,7 +37,7 @@ namespace Stress.Game.Cards
         /// </summary>
         /// <param name="card">Card to play</param>
         /// <param name="isDraw">If game is in draw, all cards are playable</param>
-        public bool CanAddCard(Card card, bool isDraw = false)
+        internal bool CanAddCard(Card card, bool isDraw = false)
         {
             if (card is null)
                 throw new ArgumentNullException(nameof(card));

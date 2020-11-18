@@ -32,6 +32,7 @@ namespace Stress.Server.Hubs
             await Groups.AddToGroupAsync(this.Context.ConnectionId, sessionKey);
             var gameState = session.AddPlayer(nickName);
 
+            // Signal clients to start if both players has joined
             if (gameState.IsReady)
                 await Clients.Group(sessionKey).SendAsync(GameStateChangedMethod, gameState);
         }

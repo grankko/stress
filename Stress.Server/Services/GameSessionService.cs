@@ -12,13 +12,8 @@ namespace Stress.Server.Services
 
         private bool CanGameStart { get => _gameplay.CanStart(); }
 
-        // Draw happens first after one player signals, and the other accepts. Needs to track state.
-        private bool _playerOneWantsToDraw = false;
-        private bool _playerTwoWantsToDraw = false;
-
-        // Rematch happens first after one player signals, and the other accepts. Needs to track state.
-        private bool _playerOneWantsNewGame = false;
-        private bool _playerTwoWantsNewGame = false;
+        private ConsensusService _drawConsensus = new ConsensusService(2);
+        private ConsensusService _rematchConsensus = new ConsensusService(2);
 
         public GameSessionService(string key, IGameplay gameplay)
         {
@@ -46,36 +41,6 @@ namespace Stress.Server.Services
             return GetStateOfPlay();
         }
 
-        public GameState PlayerWantsToDraw(int playerNumber)
-        {
-            var drawExecuted = false;
-
-            if (playerNumber == 1)
-                _playerOneWantsToDraw = true;
-            if (playerNumber == 2)
-                _playerTwoWantsToDraw = true;
-
-            // Execute draw if both players have signaled this
-            if (_playerOneWantsToDraw && _playerTwoWantsToDraw)
-            {
-                _gameplay.Draw();
-                _playerOneWantsToDraw = false;
-                _playerTwoWantsToDraw = false;
-
-                drawExecuted = true;
-            }
-
-            var state = GetStateOfPlay();
-            state.DrawExecuted = drawExecuted;
-
-            // If only one player has signaled interest in a draw event,
-            // include that information in the game state to show the other player.
-            if (!drawExecuted)
-                state.DrawRequestedByPlayer = playerNumber;
-
-            return state;
-        }
-
         public GameState PlayerCallsStress(int playerNumber)
         {
             Player loser = _gameplay.PlayerCallsStressEvent(playerNumber);
@@ -88,29 +53,35 @@ namespace Stress.Server.Services
 
         public GameState RequestNewGame(int playerNumber)
         {
-            var newGameStarted = false;
+            var consensusReached = _rematchConsensus.SignalAccept(playerNumber);
 
-            if (playerNumber == 1)
-                _playerOneWantsNewGame = true;
-            if (playerNumber == 2)
-                _playerTwoWantsNewGame = true;
-
-            // Initiate rematch if both players have signaled this
-            if (_playerOneWantsNewGame && _playerTwoWantsNewGame)
-            {
+            if (consensusReached)
                 _gameplay.RestartGame();
-                newGameStarted = true;
-                _playerOneWantsNewGame = false;
-                _playerTwoWantsNewGame = false;
-            }
 
             var state = GetStateOfPlay();
 
             // If only one player has signaled interest in a rematch,
             // include that information in the game state to show the other player.
-            state.RematchStarted = newGameStarted;
-            if (!newGameStarted)
+            state.RematchStarted = consensusReached;
+            if (!consensusReached)
                 state.NewGameRequestedByPlayer = playerNumber;
+
+            return state;
+        }
+
+        public GameState PlayerWantsToDraw(int playerNumber)
+        {
+            var consensusReached = _drawConsensus.SignalAccept(playerNumber);
+            if (consensusReached)
+                _gameplay.Draw();
+
+            var state = GetStateOfPlay();
+            state.DrawExecuted = consensusReached;
+
+            // If only one player has signaled interest in a draw event,
+            // include that information in the game state to show the other player.
+            if (!consensusReached)
+                state.DrawRequestedByPlayer = playerNumber;
 
             return state;
         }
@@ -126,8 +97,8 @@ namespace Stress.Server.Services
             }
 
             state.IsReady = true;
-            state.PlayerOneState = GetStateOfPlayer(_gameplay.PlayerOne, 1);
-            state.PlayerTwoState = GetStateOfPlayer(_gameplay.PlayerTwo, 2);
+            state.PlayerOneState = GetStateOfPlayer(_gameplay.PlayerOne);
+            state.PlayerTwoState = GetStateOfPlayer(_gameplay.PlayerTwo);
             state.LeftStackTopCard = _gameplay.LeftStack.TopCard?.ShortName;
             state.LeftStackSize = _gameplay.LeftStack.Cards.Count;
             state.RightStackTopCard = _gameplay.RightStack.TopCard?.ShortName;
@@ -141,7 +112,7 @@ namespace Stress.Server.Services
             return state;
         }
 
-        private PlayerState GetStateOfPlayer(Player player, int playerNumber)
+        private PlayerState GetStateOfPlayer(Player player)
         {
             var state = new PlayerState();
             state.NickName = player.NickName;
@@ -150,7 +121,7 @@ namespace Stress.Server.Services
             state.CardSlot2 = player.OpenCards[1]?.ShortName;
             state.CardSlot3 = player.OpenCards[2]?.ShortName;
             state.CardSlot4 = player.OpenCards[3]?.ShortName;
-            state.PlayerNumber = playerNumber;
+            state.PlayerNumber = player.PlayerNumber;
             return state;
         }
     }
