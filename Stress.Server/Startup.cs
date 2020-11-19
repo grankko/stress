@@ -5,7 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Stress.Game;
 using Stress.Server.Hubs;
+using Stress.Server.Middleware;
 using Stress.Server.Services;
+using System;
 
 namespace Stress.Server
 {
@@ -23,6 +25,7 @@ namespace Stress.Server
         {
             services.AddControllers();
             services.AddSignalR();
+            services.AddHsts(options => { options.MaxAge = TimeSpan.FromDays(365); options.IncludeSubDomains = true; });
             services.AddSingleton<ISessionManagementService, SessionManagementService>();
             services.AddTransient<IGameplay, Gameplay>();
             services.AddTransient<IGameSessionService>(p =>
@@ -36,9 +39,17 @@ namespace Stress.Server
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseHsts();
             app.UseDefaultFiles();
-            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                OnPrepareResponse = ctx =>
+                {
+                    SecurityHeadersMiddleware.SetSecurityHeaders(ctx.Context.Response.HttpContext);
+                }
+            });
             app.UseHttpsRedirection();
+            app.UseMiddleware<SecurityHeadersMiddleware>();
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {

@@ -3,11 +3,6 @@ using Moq;
 using Stress.Game;
 using Stress.Game.Cards;
 using Stress.Server.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Stress.Server.Tests
 {
@@ -50,7 +45,7 @@ namespace Stress.Server.Tests
             _gameplayMock.Verify(g => g.Draw(), Times.Never);
             Assert.IsFalse(state.DrawExecuted);
             Assert.AreEqual(1, state.DrawRequestedByPlayer);
-            
+
             state = sut.PlayerWantsToDraw(2);
             _gameplayMock.Verify(g => g.Draw(), Times.Once);
             Assert.IsTrue(state.DrawExecuted);

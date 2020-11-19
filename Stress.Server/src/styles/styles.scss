@@ -66,9 +66,13 @@ input[type=text] {
     transform: translate(($left-offset*-1), 0);
 }
 
-.startOptionPanel {
+.startOptionPanel, .startOptionPanel--loader {
     max-width: 500px;
     margin: 15px;
+}
+
+.startOptionPanel--loader {
+    display: none;
 }
 
 .gamePanel {

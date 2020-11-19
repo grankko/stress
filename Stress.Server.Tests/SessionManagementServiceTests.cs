@@ -3,18 +3,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Stress.Game;
 using Stress.Server.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Stress.Server.Tests
 {
     [TestClass]
     public class SessionManagementServiceTests
     {
-        
+
         [TestInitialize]
         public void InitializeTest()
         {
