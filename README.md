@@ -9,6 +9,6 @@ https://sv.wikipedia.org/wiki/Stress_(kortspel)
 - Touch support through [interact.js](https://interactjs.io/)
 - Webpack for bundling and SASS support
 
-Live at: https://granakerprod-stress.azurewebsites.net/
+Live at: https://stress.granaker.se/
 
 ![how to start game](https://github.com/grankko/stress/raw/main/Stress.Server/wwwroot/images/howto.png)
