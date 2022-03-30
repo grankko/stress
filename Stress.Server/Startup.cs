@@ -48,7 +48,7 @@ namespace Stress.Server
                     SecurityHeadersMiddleware.SetSecurityHeaders(ctx.Context.Response.HttpContext);
                 }
             });
-            app.UseHttpsRedirection();
+
             app.UseMiddleware<SecurityHeadersMiddleware>();
             app.UseRouting();
             app.UseEndpoints(endpoints =>
