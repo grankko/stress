@@ -12,9 +12,9 @@ namespace Stress.Server.Controllers
     public class GameController : ControllerBase
     {
 
-        private readonly SessionManagementService _sessionService;
+        private readonly ISessionManagementService _sessionService;
 
-        public GameController(SessionManagementService sessionService)
+        public GameController(ISessionManagementService sessionService)
         {
             _sessionService = sessionService;
         }
