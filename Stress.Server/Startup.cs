@@ -25,6 +25,7 @@ namespace Stress.Server
         {
             services.AddControllers();
             services.AddSignalR();
+            services.AddLogging();
             services.AddHsts(options => { options.MaxAge = TimeSpan.FromDays(365); options.IncludeSubDomains = true; });
             services.AddSingleton<ISessionManagementService, SessionManagementService>();
             services.AddTransient<IGameplay, Gameplay>();

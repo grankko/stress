@@ -50,9 +50,7 @@ class startGameViewModel {
         });
 
         $('joinGameButton').addEventListener('click', function (event) {
-            me.joinGameSession();
-            me.mainViewModel.showGame();
-
+            me.joinGameSession()
             event.preventDefault();
         });
     }
